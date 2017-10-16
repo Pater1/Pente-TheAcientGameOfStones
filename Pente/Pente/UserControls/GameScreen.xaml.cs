@@ -12,16 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Pente.UserControls;
 
-namespace Pente {
+namespace Pente.UserControls
+{
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for GameScreen.xaml
     /// </summary>
-    public partial class MainWindow : Window {
-        public MainWindow() {
+    public partial class GameScreen : UserControl
+    {
+        public GameScreen()
+        {
             InitializeComponent();
-            MainGrid.Children.Add(new MainMenu());
         }
     }
 }
