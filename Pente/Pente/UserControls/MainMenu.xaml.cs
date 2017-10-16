@@ -20,14 +20,31 @@ namespace Pente.UserControls
     /// </summary>
     public partial class MainMenu : UserControl
     {
+        public MainWindow TheWindow { get; set; }
         public MainMenu()
         {
             InitializeComponent();
         }
+        public MainMenu(MainWindow window)
+        {
+            InitializeComponent();
+            TheWindow = window;
+        }
 
         private void NewGameButton_Click(object sender, RoutedEventArgs e)
         {
+            TheWindow.SwitchToGame();
             
+        }
+
+        private void Rules_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            TheWindow.Close();
         }
     }
 }

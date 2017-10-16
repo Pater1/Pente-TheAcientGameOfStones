@@ -16,19 +16,25 @@ using System.Windows.Shapes;
 namespace Pente.UserControls
 {
     /// <summary>
-    /// Interaction logic for GameScreen.xaml
+    /// Interaction logic for PlayerStatsUC.xaml
     /// </summary>
-    public partial class GameScreen : UserControl
+    public partial class PlayerStatsUC : UserControl
     {
-        public MainWindow TheWindow { get; set; }
-        public GameScreen()
+        private int playerNumber;
+
+        public int PlayerNumber
         {
-            InitializeComponent();
+            get { return playerNumber; }
+            set
+            {
+                playerNumber = value;
+                MainLabel.Content = $"Player {playerNumber} Stats:";
+            }
         }
-        public GameScreen(MainWindow window)
+
+        public PlayerStatsUC()
         {
             InitializeComponent();
-            TheWindow = window;
         }
     }
 }

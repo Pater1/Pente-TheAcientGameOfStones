@@ -15,9 +15,19 @@
 
         </UniformGrid>
         <StackPanel Grid.Column="1">
-            <Label Content="Pente" Foreground="{StaticResource TextColorA}"
-                   FontSize="36" HorizontalContentAlignment="Center"
+            <StackPanel.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Foreground" Value="{StaticResource TextColorA}"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </StackPanel.Resources>
+            <Label Content="Pente" FontSize="36"
+                   Margin="0 0 0 30"
             />
+            <local:PlayerStatsUC PlayerNumber="1"/>
+            <local:PlayerStatsUC PlayerNumber="2"/>
+            <Label Content="Game Status:" FontSize="24" Margin="0 20"/>
+            <Label Content="Game in Progress" FontSize="18"/>
         </StackPanel>
     </Grid>
 </UserControl>
