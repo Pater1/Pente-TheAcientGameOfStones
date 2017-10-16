@@ -33,8 +33,7 @@ namespace Pente.UserControls
 
         private void NewGameButton_Click(object sender, RoutedEventArgs e)
         {
-            TheWindow.SwitchToGame();
-            
+            TheWindow.Logic.StartNewGame();
         }
 
         private void Rules_Click(object sender, RoutedEventArgs e)

@@ -55,6 +55,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Logic\MainGameLogic.cs" />
+    <Compile Include="Models\Stone.cs" />
+    <Compile Include="Models\StoneStates.cs" />
     <Compile Include="UserControls\GameScreen.xaml.cs">
       <DependentUpon>GameScreen.xaml</DependentUpon>
     </Compile>

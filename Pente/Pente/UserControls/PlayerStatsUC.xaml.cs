@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,7 +20,7 @@ namespace Pente.UserControls
     /// <summary>
     /// Interaction logic for PlayerStatsUC.xaml
     /// </summary>
-    public partial class PlayerStatsUC : UserControl
+    public partial class PlayerStatsUC : UserControl, INotifyPropertyChanged
     {
         private int playerNumber;
 
@@ -31,10 +33,31 @@ namespace Pente.UserControls
                 MainLabel.Content = $"Player {playerNumber} Stats:";
             }
         }
+        private int captures;
+
+        public int Captures
+        {
+            get { return captures; }
+            set
+            {
+                captures = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public PlayerStatsUC()
         {
             InitializeComponent();
+            Player1Captures.DataContext = this;
+            Captures = 0;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

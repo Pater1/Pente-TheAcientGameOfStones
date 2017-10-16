@@ -14,9 +14,8 @@
                    Margin="50 0 0 0"
             />
             <Label x:Name="Player1Captures"
-                   Content="0" FontSize="18"
-                   HorizontalContentAlignment="Left"
-            />
+                   Content="{Binding Path=Captures}" FontSize="18"
+                   HorizontalContentAlignment="Left" />
         </StackPanel>
     </StackPanel>
 </UserControl>

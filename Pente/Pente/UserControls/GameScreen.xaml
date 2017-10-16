@@ -11,21 +11,19 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <UniformGrid Grid.Column="0" Height="19" Width="19">
-
-        </UniformGrid>
+        <UniformGrid Grid.Column="0" Height="19" Width="19"/>
         <StackPanel Grid.Column="1">
             <StackPanel.Resources>
                 <Style TargetType="Label">
-                    <Setter Property="Foreground" Value="{StaticResource TextColorA}"/>
+                    <Setter Property="Foreground" Value="{StaticResource TextColor}"/>
                     <Setter Property="HorizontalContentAlignment" Value="Center"/>
                 </Style>
             </StackPanel.Resources>
             <Label Content="Pente" FontSize="36"
                    Margin="0 0 0 30"
             />
-            <local:PlayerStatsUC PlayerNumber="1"/>
-            <local:PlayerStatsUC PlayerNumber="2"/>
+            <local:PlayerStatsUC PlayerNumber="1" x:Name="Player1Status"/>
+            <local:PlayerStatsUC PlayerNumber="2" x:Name="Player2Status"/>
             <Label Content="Game Status:" FontSize="24" Margin="0 20"/>
             <Label Content="Game in Progress" FontSize="18"/>
         </StackPanel>

@@ -26,12 +26,5 @@ namespace Pente {
             Logic = new MainGameLogic(this);
             MainGrid.Children.Add(new MainMenu(this));
         }
-
-        public void SwitchToGame()
-        {
-            Height = 525;
-            MainGrid.Children.Clear();
-            MainGrid.Children.Add(new GameScreen(this));
-        }
     }
 }
