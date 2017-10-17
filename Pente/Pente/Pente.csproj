@@ -54,7 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\PlayerNumberLabelConverter.cs" />
     <Compile Include="Logic\MainGameLogic.cs" />
+    <Compile Include="Models\Player.cs" />
     <Compile Include="Models\Stone.cs" />
     <Compile Include="Models\StoneStates.cs" />
     <Compile Include="UserControls\GameScreen.xaml.cs">

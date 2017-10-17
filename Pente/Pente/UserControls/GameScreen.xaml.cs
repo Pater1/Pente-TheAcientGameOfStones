@@ -32,7 +32,19 @@ namespace Pente.UserControls
             InitializeComponent();
             TheWindow = window;
             Stone stone = new Stone();
-
+            stone.MouseLeftButtonDown += (sender, args) =>
+            {
+                if (stone.CurrentState != StoneState.Open) return;
+                if (TheWindow.Logic.CurrentPlayer == TheWindow.Logic.Player1)
+                {
+                    stone.CurrentState = StoneState.Black;
+                }
+                else
+                {   
+                    stone.CurrentState = StoneState.White;
+                }
+            };
+            GameGrid.Children.Add(stone);
         }
     }
 }

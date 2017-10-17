@@ -4,7 +4,9 @@
              xmlns:local="clr-namespace:Pente"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="BoardColor" Color="Green"/>
+        <SolidColorBrush x:Key="BoardBrush" Color="Green"/>
+        <SolidColorBrush x:Key="StoneBrushWhite" Color="White"/>
+        <SolidColorBrush x:Key="StoneBrushBlack" Color="Black"/>
         <SolidColorBrush x:Key="BackgroundColor" Color="#cc391c"/>
         <SolidColorBrush x:Key="TextColor" Color="#ede6e3"/>
         <SolidColorBrush x:Key="AccentColor" Color="#5bc3eb"/>
