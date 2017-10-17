@@ -5,12 +5,29 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Pente.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="525" d:DesignWidth="725">
+             d:DesignHeight="825" d:DesignWidth="725">
 
     <StackPanel Background="{StaticResource BackgroundColor}">
-        <Button x:Name="NewGameButton" Content="New Game" 
-                Background="{StaticResource AccentColor}"
-                FontSize="48" Width="275" Height="90" Click="NewGameButton_Click"
-        />
+        <Label Content="Pente" FontSize="108" HorizontalContentAlignment="Center"
+               Foreground="{StaticResource TextColor}" Margin="0 50 0 0"
+               />
+        <Border Width="275" Height="90" BorderBrush="Black" BorderThickness="2" Margin="50">
+            <Button x:Name="NewGameButton" Content="New Game" 
+                    Background="{StaticResource AccentColor}"
+                    FontSize="48" Click="NewGameButton_Click"
+            />
+        </Border>
+        <Border Width="180" Height="90" BorderBrush="Black" BorderThickness="2" Margin="50">
+            <Button x:Name="Rules" Content="Rules" 
+                    Background="{StaticResource AccentColor}"
+                    FontSize="48" Click="Rules_Click"
+            />
+        </Border>
+        <Border Width="115" Height="85" BorderBrush="Black" BorderThickness="2" Margin="50">
+            <Button x:Name="Exit" Content="Exit" 
+                    Background="{StaticResource AccentColor}"
+                    FontSize="48" Click="Exit_Click"
+            />
+        </Border>
     </StackPanel>
 </UserControl>

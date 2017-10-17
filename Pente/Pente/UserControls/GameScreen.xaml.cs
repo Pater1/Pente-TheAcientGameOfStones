@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Pente.Models;
 
 namespace Pente.UserControls
 {
@@ -20,9 +21,18 @@ namespace Pente.UserControls
     /// </summary>
     public partial class GameScreen : UserControl
     {
+        public Stone[,] Stones { get; set; }
+        public MainWindow TheWindow { get; set; }
         public GameScreen()
         {
             InitializeComponent();
+        }
+        public GameScreen(MainWindow window)
+        {
+            InitializeComponent();
+            TheWindow = window;
+            Stone stone = new Stone();
+
         }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pente"
         mc:Ignorable="d"
-        Title="Pente" Height="525" Width="725">
+        Title="Pente" Height="825" Width="725">
     <Grid x:Name="MainGrid">
         
     </Grid>

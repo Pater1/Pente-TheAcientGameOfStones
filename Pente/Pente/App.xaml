@@ -6,8 +6,7 @@
     <Application.Resources>
         <SolidColorBrush x:Key="BoardColor" Color="Green"/>
         <SolidColorBrush x:Key="BackgroundColor" Color="#cc391c"/>
-        <SolidColorBrush x:Key="TextColorA" Color="#ede6e3"/>
-        <SolidColorBrush x:Key="TextColorB" Color="#dadad9"/>
+        <SolidColorBrush x:Key="TextColor" Color="#ede6e3"/>
         <SolidColorBrush x:Key="AccentColor" Color="#5bc3eb"/>
     </Application.Resources>
 </Application>
