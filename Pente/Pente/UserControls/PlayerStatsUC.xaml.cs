@@ -43,7 +43,7 @@ namespace Pente.UserControls
                 captures = value;
                 OnPropertyChanged();
             }
-        }
+        } 
 
         public PlayerStatsUC()
         {
