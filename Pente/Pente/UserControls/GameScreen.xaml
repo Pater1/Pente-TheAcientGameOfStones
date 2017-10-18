@@ -11,7 +11,7 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <UniformGrid x:Name="GameGrid" Grid.Column="0" Height="19" Width="19"/>
+        <UniformGrid x:Name="GameGrid" Grid.Column="0" Rows="19" Columns="19"/>
         <StackPanel Grid.Column="1">
             <StackPanel.Resources>
                 <Style TargetType="Label">

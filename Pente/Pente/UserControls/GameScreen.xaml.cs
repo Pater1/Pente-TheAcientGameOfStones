@@ -31,20 +31,103 @@ namespace Pente.UserControls
         {
             InitializeComponent();
             TheWindow = window;
-            Stone stone = new Stone();
-            stone.MouseLeftButtonDown += (sender, args) =>
+        }
+
+        public void CreatePenteBoard(int rows, int columns)
+        {
+            GameGrid.Children.Clear();
+            GameGrid.Rows = rows;
+            GameGrid.Columns = columns;
+            Stones = new Stone[rows,columns];
+            for (var i = 0; i < rows; i++)
             {
-                if (stone.CurrentState != StoneState.Open) return;
-                if (TheWindow.Logic.CurrentPlayer == TheWindow.Logic.Player1)
+                for (var j = 0; j < columns; j++)
                 {
-                    stone.CurrentState = StoneState.Black;
+                    Stone stone = new Stone();
+                    stone.MouseLeftButtonDown += StoneOnMouseLeftButtonDown;
+                    stone.Content = $"{i},{j}";
+                    stone.FontSize = 6;
+                    Stones[i, j] = stone;
+                    GameGrid.Children.Add(stone);
                 }
-                else
-                {   
-                    stone.CurrentState = StoneState.White;
+            }
+
+        }
+
+
+
+        private void StoneOnMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            if (sender is Stone stone)
+            {
+                switch (TheWindow.Logic.MoveCount)
+                {
+                    case 0:
+                    {
+                        int rows = Stones.GetLength(0);
+                        int columns = Stones.GetLength(1);
+                        int centerRow = rows - (rows / 2) - 1;
+                        int centerColumn = columns - (columns / 2) - 1;
+                        if (stone.Equals(Stones[centerRow, centerColumn]))
+                        {
+                            stone.CurrentState = StoneState.Black;
+                            TheWindow.Logic.SwitchPlayerTurn();
+                        }
+                        break;
+                    }
+                    case 1:
+                    {
+                        int rows = Stones.GetLength(0);
+                        int columns = Stones.GetLength(1);
+                        int centerRow = rows - (rows / 2) - 1;
+                        int centerColumn = columns - (columns / 2) - 1;
+                        bool valid = true;
+                        for (var i = centerRow - 3; i < centerRow + 4; i++)
+                        {
+                            for (var j = centerColumn - 3; j < centerColumn + 4; j++)
+                            {
+                                if (!stone.Equals(Stones[i, j])) continue;
+                                valid = false;
+                                break;
+                            }
+                            if (!valid)
+                            {
+                                break;
+                            }
+                        }
+                        if (valid)
+                        {
+                            stone.CurrentState = StoneState.White;
+                            TheWindow.Logic.SwitchPlayerTurn();
+                        }
+                        break;
+                    }
+                    default:
+                        if (stone.CurrentState != StoneState.Open) return;
+                        stone.CurrentState = TheWindow.Logic.CurrentPlayer == TheWindow.Logic.Player1 ? StoneState.Black : StoneState.White;
+                        bool found = false;
+                        int foundX = 0;
+                        int foundY = 0;
+                        for (var i = 0; i < Stones.GetLength(0); i++)
+                        {
+                            for (var j = 0; j < Stones.GetLength(1); j++)
+                            {
+                                if (!stone.Equals(Stones[i, j])) continue;
+                                foundX = j;
+                                foundY = i;
+                                found = true;
+                                break;
+                            }
+                            if (found)
+                            {
+                                break;
+                            }
+                        }
+                        TheWindow.Logic.CheckCapture(foundX,foundY);
+                        TheWindow.Logic.SwitchPlayerTurn();
+                        break;
                 }
-            };
-            GameGrid.Children.Add(stone);
+            }
         }
     }
 }
