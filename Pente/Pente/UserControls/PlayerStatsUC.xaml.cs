@@ -30,7 +30,7 @@ namespace Pente.UserControls
             set
             {
                 playerNumber = value;
-                MainLabel.Content = $"Player {playerNumber} Stats:";
+                OnPropertyChanged();
             }
         }
         private int captures;
@@ -43,13 +43,12 @@ namespace Pente.UserControls
                 captures = value;
                 OnPropertyChanged();
             }
-        }
-
+        } 
 
         public PlayerStatsUC()
         {
             InitializeComponent();
-            Player1Captures.DataContext = this;
+            DataContext = this;
             Captures = 0;
         }
 

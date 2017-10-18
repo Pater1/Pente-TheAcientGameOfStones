@@ -20,6 +20,7 @@ namespace Pente {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+        public const int GameScreenHeightConst = 525;
         public MainGameLogic Logic { get; set; }
         public MainWindow() {
             InitializeComponent();

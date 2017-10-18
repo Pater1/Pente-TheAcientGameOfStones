@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Pente.UserControls"
+             xmlns:converters="clr-namespace:Pente.Converters"
              mc:Ignorable="d">
     <StackPanel>
-        <Label x:Name="MainLabel" Content="Player 1 Stats:" FontSize="24"
+        <StackPanel.Resources>
+            <converters:PlayerNumberLabelConverter x:Key="PlayerNumberLabelConverter"/>
+        </StackPanel.Resources>
+        <Label x:Name="MainLabel" Content="{Binding PlayerNumber, Converter={StaticResource PlayerNumberLabelConverter}}" FontSize="24"
         />
         <StackPanel Orientation="Horizontal">
             <Label Content="Captures: " FontSize="18"
