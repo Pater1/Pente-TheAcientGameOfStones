@@ -8,7 +8,7 @@ namespace Pente_Testing {
         [TestMethod]
         public void ProperInitializationTest_Stone() {
             Stone st = new Stone();
-            Assert.Equals(st.CurrentState, StoneStates.Open);
+            Assert.Equals(st.CurrentState, StoneState.Open);
         }
     }
 }
