@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.TextFormatting;
 using Pente.Models;
 using Pente.UserControls;
 
@@ -382,17 +383,57 @@ namespace Pente.Logic
             return count;
         }
 
-        private bool CheckLeftTria(int x, int y)
+        private bool CheckHorizontalTria(int x, int y)
         {
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
             Stone[,] stones = gameScreen.Stones;
-            if (x == 0 || x == stones.GetLength(1) - 1) return false;
-            if (x - 3 < 0 || x + 1 >= stones.GetLength(1)) return false;
-            if (stones[y, x + 1].CurrentState != StoneState.Open) return false;
-            if (stones[y, x - 1].CurrentState != currentState) return false;
-            if (stones[y, x - 2].CurrentState != currentState) return false;
-            if (stones[y, x - 3].CurrentState != StoneState.Open) return false;
-            return true;
+            bool tria = false;
+            if (x == 0 || x == stones.GetLength(1) - 1) tria = false;
+
+            if (x - 3 < 0 || x + 3 >= stones.GetLength(1)) tria = false; //TODO: GOING TO BREAK. CALLED AT 9:40  -- place 2 from edge
+            if (stones[y, x - 1].CurrentState == currentState)
+            {
+                if (stones[y,x - 2].CurrentState == StoneState.Open)
+                {
+                    if (stones[y,x +1].CurrentState == currentState)
+                    {
+                        if (stones[y,x+2].CurrentState == StoneState.Open)
+                        {
+                            tria = true;
+                        }
+                    }
+                }
+            }
+            else if (stones[y, x - 1].CurrentState == StoneState.Open)
+            {
+                if (stones[y, x + 1].CurrentState == currentState)
+                {
+                    if (stones[y, x + 2].CurrentState == currentState)
+                    {
+                        if (stones[y, x + 3].CurrentState == StoneState.Open)
+                        {
+                            tria = true;
+                        }
+                    }
+                }
+            }
+            else if (stones[y, x + 1].CurrentState == StoneState.Open)
+            {
+                if (stones[y, x - 1].CurrentState == currentState)
+                {
+                    if (stones[y, x - 2].CurrentState == currentState)
+                    {
+                        if (stones[y, x - 3].CurrentState == currentState)
+                        {
+                            if (stones[y, x - 4].CurrentState == StoneState.Open)
+                            {
+                                tria = true;
+                            }
+                        }
+                    }
+                }
+            }
+            return tria;
         }
         private bool CheckRightTria(int x, int y)
         {
