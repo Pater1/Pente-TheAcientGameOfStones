@@ -48,7 +48,7 @@ namespace Pente.UserControls
         public PlayerStatsUC()
         {
             InitializeComponent();
-            DataContext = this;
+            MainLabel.DataContext = this;
             Captures = 0;
         }
 
