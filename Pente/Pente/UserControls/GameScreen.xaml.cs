@@ -60,9 +60,7 @@ namespace Pente.UserControls
             }
 
         }
-
-
-
+        
         private void StoneOnMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             if (sender is Stone stone)

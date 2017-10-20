@@ -48,6 +48,8 @@ namespace Pente_Testing {
                 AutomationElement board = window.FindFirstDescendant(x => x.ByClassName("GameScreen"));
 
                 Assert.IsNotNull(board);
+
+                window.Close();
             }
         }
     }
