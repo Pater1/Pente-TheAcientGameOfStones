@@ -17,17 +17,26 @@
                     FontSize="48" Click="NewGameButton_Click"
             />
         </Border>
-        <Border Width="180" Height="90" BorderBrush="Black" BorderThickness="2" Margin="50">
-            <Button x:Name="Rules" Content="Rules" 
-                    Background="{StaticResource AccentColor}"
-                    FontSize="48" Click="Rules_Click"
-            />
-        </Border>
-        <Border Width="115" Height="85" BorderBrush="Black" BorderThickness="2" Margin="50">
-            <Button x:Name="Exit" Content="Exit" 
-                    Background="{StaticResource AccentColor}"
-                    FontSize="48" Click="Exit_Click"
-            />
-        </Border>
+        <TextBox x:Name="GridXSize" PreviewTextInput="GridXSize_TextChanged"></TextBox>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Width="180" Height="90" BorderBrush="Black" BorderThickness="2" Margin="50"
+                    HorizontalAlignment="Right" Grid.Column="0">
+                <Button x:Name="Rules" Content="Rules" 
+                        Background="{StaticResource AccentColor}"
+                        FontSize="48" Click="Rules_Click"
+                />
+            </Border>
+            <Border Width="115" Height="85" BorderBrush="Black" BorderThickness="2" Margin="50"
+                HorizontalAlignment="Left" Grid.Column="1">
+                <Button x:Name="Exit" Content="Exit" 
+                        Background="{StaticResource AccentColor}"
+                        FontSize="48" Click="Exit_Click"
+                />
+            </Border>
+        </Grid>
     </StackPanel>
 </UserControl>

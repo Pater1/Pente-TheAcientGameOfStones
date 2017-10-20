@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,6 +45,12 @@ namespace Pente.UserControls
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             TheWindow.Close();
+        }
+
+        private void GridXSize_TextChanged(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

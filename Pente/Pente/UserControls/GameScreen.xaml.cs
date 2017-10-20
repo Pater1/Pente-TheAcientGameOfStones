@@ -131,6 +131,7 @@ namespace Pente.UserControls
                         TheWindow.Logic.CheckCapture(foundX,foundY);
                         TheWindow.Logic.CheckFiveInRow(foundX, foundY);
                         TheWindow.Logic.CheckTrias(foundX,foundY);
+                        TheWindow.Logic.CheckTessera(foundX,foundY);
                         TheWindow.Logic.SwitchPlayerTurn();
                         break;
                 }
