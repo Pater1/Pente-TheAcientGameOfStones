@@ -142,13 +142,12 @@ namespace Pente.Logic
         private void CheckCaptureDLDiagonal(int x, int y)
         {
             Stone[,] stones = gameScreen.Stones;
-            if (x < 3 || y > stones.GetLength(0) - 4) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (x  - 1 <= stones.GetLength(1) - 1 || y + 1 < 3) return;
+            if (x - 1 < 0 || y + 1 > stones.GetLength(0) - 1) return;
             if (stones[y + 1, x - 1].CurrentState == currentState || stones[y + 1, x - 1].CurrentState == StoneState.Open) return;
-            if (x  - 2 <= stones.GetLength(1) - 1 || y + 2 < 3) return;
-            if (stones[y + 2, x - 2].CurrentState == currentState || stones[y + 1, x - 2].CurrentState == StoneState.Open) return;
-            if (x  - 3 <= stones.GetLength(1) - 1 || y + 3 < 3) return;
+            if (x - 2 < 0 || y + 2 > stones.GetLength(0) - 1) return;
+            if (stones[y + 2, x - 2].CurrentState == currentState || stones[y + 2, x - 2].CurrentState == StoneState.Open) return;
+            if (x - 3 < 0 || y + 3 > stones.GetLength(0) - 1) return;
             if (stones[y + 3, x - 3].CurrentState != currentState) return;
             CurrentPlayer.Captures++;
             stones[y + 1, x - 1].CurrentState = StoneState.Open;
@@ -160,11 +159,11 @@ namespace Pente.Logic
             Stone[,] stones = gameScreen.Stones;
             if (x < 3 || y < 3) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (x  - 1 <= stones.GetLength(1) - 1 || y - 1 < 3) return;
+            if (x  - 1 < 0 || y - 1 < 0) return;
             if (stones[y - 1, x - 1].CurrentState == currentState || stones[y - 1, x - 1].CurrentState == StoneState.Open) return;
-            if (x  - 2 <= stones.GetLength(1) - 1 || y - 2 < 3) return;
+            if (x  - 2 < 0 || y - 2 < 0) return;
             if (stones[y - 2, x - 2].CurrentState == currentState || stones[y - 2, x - 2].CurrentState == StoneState.Open) return;
-            if (x  - 3 <= stones.GetLength(1) - 1 || y - 3 < 3) return;
+            if (x  - 3 < 0 || y - 3 < 0) return;
             if (stones[y - 3, x - 3].CurrentState != currentState || stones[y - 3, x - 3].CurrentState == StoneState.Open) return;
             CurrentPlayer.Captures++;
             stones[y - 1, x - 1].CurrentState = StoneState.Open;
@@ -176,11 +175,11 @@ namespace Pente.Logic
             Stone[,] stones = gameScreen.Stones;
             if (x > stones.GetLength(1) - 4 || y > stones.GetLength(0) - 4) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (x  + 1 <= stones.GetLength(1) - 1 || y + 1 < 3) return;
+            if (x  + 1 > stones.GetLength(1) - 1 || y + 1 > stones.GetLength(0) - 1) return;
             if (stones[y + 1, x + 1].CurrentState == currentState || stones[y + 1, x + 1].CurrentState == StoneState.Open) return;
-            if (x  + 2 <= stones.GetLength(1) - 1 || y + 2 < 3) return;
+            if (x  + 2 > stones.GetLength(1) - 1 || y + 2 > stones.GetLength(0) - 1) return;
             if (stones[y + 2, x + 2].CurrentState == currentState || stones[y + 2, x + 2].CurrentState == StoneState.Open) return;
-            if (x  + 3 <= stones.GetLength(1) - 1 || y + 3 < 3) return;
+            if (x  + 3 > stones.GetLength(1) - 1 || y + 3 > stones.GetLength(0) - 1) return;
             if (stones[y + 3, x + 3].CurrentState != currentState) return;
             CurrentPlayer.Captures++;
             stones[y + 1, x + 1].CurrentState = StoneState.Open;
@@ -190,13 +189,12 @@ namespace Pente.Logic
         private void CheckCaptureURDiagonal(int x, int y)
         {
             Stone[,] stones = gameScreen.Stones;
-            if (x < stones.GetLength(1) - 4 || y < 3) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (x  + 1 <= stones.GetLength(1) - 1 || y - 1 < 3) return;
+            if (x  + 1 > stones.GetLength(1) - 1 || y - 1 < 0) return;
             if (stones[y - 1, x + 1].CurrentState == currentState || stones[y - 1, x + 1].CurrentState == StoneState.Open) return;
-            if (x  + 2 <= stones.GetLength(1) - 1 || y - 2 < 3) return;
+            if (x  + 2 > stones.GetLength(1) - 1 || y - 1 < 0) return;
             if (stones[y - 2, x + 2].CurrentState == currentState || stones[y - 2, x + 2].CurrentState == StoneState.Open) return;
-            if (x  + 3 <= stones.GetLength(1) - 1 || y - 3 < 3) return;
+            if (x  + 3 > stones.GetLength(1) - 1 || y - 1 < 0) return;
             if (stones[y - 3, x + 3].CurrentState != currentState) return;
             CurrentPlayer.Captures++;
             stones[y - 1, x + 1].CurrentState = StoneState.Open;
@@ -249,7 +247,7 @@ namespace Pente.Logic
                     }
                 }
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 1; i < 5; i++)
             {
                 if (y + i > stones.GetLength(0)-1)
                 {
@@ -292,7 +290,7 @@ namespace Pente.Logic
                     }
                 }
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 1; i < 5; i++)
             {
                 if (x + i >= stones.GetLength(1) - 1)
                 {
@@ -335,7 +333,7 @@ namespace Pente.Logic
                     }
                 }
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 1; i < 5; i++)
             {
                 if (x - i < 0 || y + i > stones.GetLength(1) - 1)
                 {
@@ -378,7 +376,7 @@ namespace Pente.Logic
                     }
                 }
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 1; i < 5; i++)
             {
                 if (x + i > stones.GetLength(1) - 1 || y + i > stones.GetLength(0) - 1)
                 {
@@ -399,6 +397,11 @@ namespace Pente.Logic
             return count;
         }
 
+        public void CheckTrias(int x, int y)
+        {
+            //CheckHorizontalTria(x, y);
+            CheckVerticalTria(x, y);
+        }
         private bool CheckHorizontalTria(int x, int y)
         {
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
@@ -407,41 +410,51 @@ namespace Pente.Logic
             if (x == 0 || x == stones.GetLength(1) - 1) tria = false;
 
             if (x - 3 < 0 || x + 3 >= stones.GetLength(1)) tria = false; //TODO: GOING TO BREAK. CALLED AT 9:40  -- place 2 from edge
-            if (stones[y, x - 1].CurrentState == currentState)
+            if (x - 1 >= 0  && stones[y, x - 1].CurrentState == currentState)
             {
-                if (stones[y,x - 2].CurrentState == StoneState.Open)
+                if (x - 2 >= 0 && stones[y,x - 2].CurrentState == StoneState.Open)
                 {
-                    if (stones[y,x +1].CurrentState == currentState)
+                    if (x + 1 <= stones.GetLength(1) - 1 && stones[y, x + 1].CurrentState == currentState)
                     {
-                        if (stones[y,x+2].CurrentState == StoneState.Open)
+                        if (x + 2 <= stones.GetLength(1) - 1 && stones[y, x + 2].CurrentState == StoneState.Open)
+                        {
+                            tria = true;
+                        }
+                    }
+                }
+                else if (x - 2 >= 0 && stones[y, x - 2].CurrentState == currentState)
+                {
+                    if (x - 3 >= 0 && stones[y, x - 3].CurrentState == StoneState.Open)
+                    {
+                        if (x + 1 <= stones.GetLength(1) - 1 && stones[y, x + 1].CurrentState == StoneState.Open)
                         {
                             tria = true;
                         }
                     }
                 }
             }
-            else if (stones[y, x - 1].CurrentState == StoneState.Open)
+            else if (x - 1 >= 0 && stones[y, x - 1].CurrentState == StoneState.Open)
             {
-                if (stones[y, x + 1].CurrentState == currentState)
+                if (x + 1 <= stones.GetLength(1) - 1 && stones[y, x + 1].CurrentState == currentState)
                 {
-                    if (stones[y, x + 2].CurrentState == currentState)
+                    if (x + 2 <= stones.GetLength(1) - 1 && stones[y, x + 2].CurrentState == currentState)
                     {
-                        if (stones[y, x + 3].CurrentState == StoneState.Open)
+                        if (x + 3 <= stones.GetLength(1) - 1 && stones[y, x + 3].CurrentState == StoneState.Open)
                         {
                             tria = true;
                         }
                     }
                 }
             }
-            else if (stones[y, x + 1].CurrentState == StoneState.Open)
+            else if (x + 1 <= stones.GetLength(1) - 1 && stones[y, x + 1].CurrentState == StoneState.Open)
             {
-                if (stones[y, x - 1].CurrentState == currentState)
+                if (x - 1 >= 0 && stones[y, x - 1].CurrentState == currentState)
                 {
-                    if (stones[y, x - 2].CurrentState == currentState)
+                    if (x - 2 >= 0 && stones[y, x - 2].CurrentState == currentState)
                     {
-                        if (stones[y, x - 3].CurrentState == currentState)
+                        if (x - 3 >= 0 && stones[y, x - 3].CurrentState == currentState)
                         {
-                            if (stones[y, x - 4].CurrentState == StoneState.Open)
+                            if (x - 4 >= 0 && stones[y, x - 4].CurrentState == StoneState.Open)
                             {
                                 tria = true;
                             }
@@ -449,31 +462,71 @@ namespace Pente.Logic
                     }
                 }
             }
+            MessageBox.Show($"HORI: {tria}");
             return tria;
         }
-        private bool CheckRightTria(int x, int y)
-        {
-            StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            Stone[,] stones = gameScreen.Stones;
-            if (x == 0 || x == stones.GetLength(1) - 1) return false;
-            if (x - 1 < 0 || x + 3 >= stones.GetLength(1)) return false;
-            if (stones[y, x - 1].CurrentState != StoneState.Open) return false;
-            if (stones[y, x + 1].CurrentState != currentState) return false;
-            if (stones[y, x + 2].CurrentState != currentState) return false;
-            if (stones[y, x + 3].CurrentState != StoneState.Open) return false;
-            return true;
-        }
-        private bool CheckUpTria(int x, int y)
+        private bool CheckVerticalTria(int x, int y)
         {
             Stone[,] stones = gameScreen.Stones;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (y == 0 || y == stones.GetLength(0) - 1) return false;
-            if (y - 3 < 0 || y + 1 >= stones.GetLength(0)) return false;
-            if (stones[y + 1, x].CurrentState != StoneState.Open) return false;
-            if (stones[y - 1, x].CurrentState != currentState) return false;
-            if (stones[y - 2, x].CurrentState != currentState) return false;
-            if (stones[y - 3, x].CurrentState != StoneState.Open) return false;
-            return true;
+            bool tria = false;
+            if (y == 0 || x == stones.GetLength(0) - 1) tria = false;
+
+            if (y - 3 >= 0 && y + 3 >= stones.GetLength(0)) tria = false; //TODO: GOING TO BREAK. CALLED AT 9:40  -- place 2 from edge
+            if (y - 1 >= 0 && stones[y - 1, x].CurrentState == currentState)
+            {
+                if (y - 2 >= 0 || stones[y - 2, x].CurrentState == StoneState.Open)
+                {
+                    if (y + 1 <= stones.GetLength(0) - 1 && stones[y + 1, x].CurrentState == currentState)
+                    {
+                        if (y + 2 <= stones.GetLength(0) - 1 && stones[y + 2, x].CurrentState == StoneState.Open)
+                        {
+                            tria = true;
+                        }
+                    }
+                }
+                else if (y - 2 >= 0 && stones[y - 2, x].CurrentState == currentState)
+                {
+                    if (y - 3 >= 0 && stones[y - 3, x].CurrentState == StoneState.Open)
+                    {
+                        if (y + 1 <= stones.GetLength(1) - 1 && stones[y + 1, x].CurrentState == StoneState.Open)
+                        {
+                            tria = true;
+                        }
+                    }
+                }
+            }
+            else if (y - 1 >= 0 && stones[y - 1, x].CurrentState == StoneState.Open)
+            {
+                if (y + 1 <= stones.GetLength(0) - 1 && stones[y + 1, x].CurrentState == currentState)
+                {
+                    if (y + 2 <= stones.GetLength(0) - 1 && stones[y + 2, x].CurrentState == currentState)
+                    {
+                        if (y + 3 <= stones.GetLength(0) - 1 && stones[y + 3, x].CurrentState == StoneState.Open)
+                        {
+                            tria = true;
+                        }
+                    }
+                }
+            }
+            else if (y + 1 <= stones.GetLength(0) - 1 && stones[y + 1, x].CurrentState == StoneState.Open)
+            {
+                if (y - 1 >= 0 || stones[y - 1, x].CurrentState == currentState)
+                {
+                    if (y - 2 >= 0 || stones[y - 2, x].CurrentState == currentState)
+                    {
+                        if (y - 3 >= 0 || stones[y - 3, x].CurrentState == currentState)
+                        {
+                            if (y - 4 >= 0 || stones[y - 4, x].CurrentState == StoneState.Open)
+                            {
+                                tria = true;
+                            }
+                        }
+                    }
+                }
+            }
+            MessageBox.Show($"VERT: {tria}");
+            return tria;
         }
         private bool CheckDownTria(int x, int y)
         {

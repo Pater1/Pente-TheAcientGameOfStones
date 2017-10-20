@@ -89,9 +89,9 @@ namespace Pente.UserControls
                         int centerRow = rows - (rows / 2) - 1;
                         int centerColumn = columns - (columns / 2) - 1;
                         bool valid = true;
-                        for (var i = centerRow - 3; i < centerRow + 4; i++)
+                        for (int i = centerRow - 2; i < centerRow + 3; i++)
                         {
-                            for (var j = centerColumn - 3; j < centerColumn + 4; j++)
+                            for (int j = centerColumn - 2; j < centerColumn + 3; j++)
                             {
                                 if (!stone.Equals(Stones[i, j])) continue;
                                 valid = false;
@@ -132,6 +132,7 @@ namespace Pente.UserControls
                         }
                         TheWindow.Logic.CheckCapture(foundX,foundY);
                         TheWindow.Logic.CheckFiveInRow(foundX, foundY);
+                        TheWindow.Logic.CheckTrias(foundX,foundY);
                         TheWindow.Logic.SwitchPlayerTurn();
                         break;
                 }
