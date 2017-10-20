@@ -84,9 +84,11 @@ namespace Pente.Logic
             Stone[,] stones = gameScreen.Stones;
             if (x < 3) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (stones[y, x - 1].CurrentState == StoneState.Open) return;
-            if (stones[y, x - 1].CurrentState == currentState) return;
-            if (stones[y, x - 2].CurrentState == currentState) return;
+            if (x - 1 < 0) return;
+            if (stones[y, x - 1].CurrentState == currentState || stones[y, x - 1].CurrentState == StoneState.Open) return;
+            if (x - 2 < 0) return;
+            if (stones[y, x - 2].CurrentState == currentState || stones[y, x - 2].CurrentState == StoneState.Open) return;
+            if (x - 3 < 0) return;
             if (stones[y, x - 3].CurrentState != currentState) return;
             CurrentPlayer.Captures++;
             stones[y, x - 1].CurrentState = StoneState.Open;
@@ -97,9 +99,11 @@ namespace Pente.Logic
             Stone[,] stones = gameScreen.Stones;
             if (y < 3) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (stones[y - 1, x].CurrentState == StoneState.Open) return;
-            if (stones[y - 1, x].CurrentState == currentState) return;
-            if (stones[y - 2, x].CurrentState == currentState) return;
+            if (y  - 1 < 0) return;
+            if (stones[y - 1, x].CurrentState == currentState || stones[y - 1, x].CurrentState == StoneState.Open) return;
+            if (y  - 2 < 0) return;
+            if (stones[y - 2, x].CurrentState == currentState || stones[y - 2, x].CurrentState == StoneState.Open) return;
+            if (y  - 3 < 0) return;
             if (stones[y - 3, x].CurrentState != currentState) return;
             CurrentPlayer.Captures++;
             stones[y - 1, x].CurrentState = StoneState.Open;
@@ -110,9 +114,11 @@ namespace Pente.Logic
             Stone[,] stones = gameScreen.Stones;
             if (x > stones.GetLength(1) - 4) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (stones[y, x + 1].CurrentState == StoneState.Open) return;
-            if (stones[y, x + 1].CurrentState == currentState) return;
-            if (stones[y, x + 2].CurrentState == currentState) return;
+            if (x + 1 > stones.GetLength(1) - 1) return;
+            if (stones[y, x + 1].CurrentState == currentState || stones[y, x + 1].CurrentState == StoneState.Open) return;
+            if (x + 2 > stones.GetLength(1) - 1) return;
+            if (stones[y, x + 2].CurrentState == currentState || stones[y, x + 2].CurrentState == StoneState.Open) return;
+            if (x + 3 > stones.GetLength(1) - 1) return;
             if (stones[y, x + 3].CurrentState != currentState) return;
             CurrentPlayer.Captures++;
             stones[y, x + 1].CurrentState = StoneState.Open;
@@ -123,9 +129,11 @@ namespace Pente.Logic
             Stone[,] stones = gameScreen.Stones;
             if (y > stones.GetLength(0) - 4) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (stones[y + 1, x].CurrentState == StoneState.Open) return;
-            if (stones[y + 1, x].CurrentState == currentState) return;
-            if (stones[y + 2, x].CurrentState == currentState) return;
+            if (y + 1 > stones.GetLength(0) - 1) return;
+            if (stones[y + 1, x].CurrentState == currentState || stones[y + 1, x].CurrentState == StoneState.Open) return;
+            if (y + 2 > stones.GetLength(0) - 1) return;
+            if (stones[y + 2, x].CurrentState == currentState || stones[y + 2, x].CurrentState == StoneState.Open) return;
+            if (y + 3 > stones.GetLength(0) - 1) return;
             if (stones[y + 3, x].CurrentState != currentState) return;
             CurrentPlayer.Captures++;
             stones[y + 1, x].CurrentState = StoneState.Open;
@@ -136,9 +144,11 @@ namespace Pente.Logic
             Stone[,] stones = gameScreen.Stones;
             if (x < 3 || y > stones.GetLength(0) - 4) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (stones[y + 1, x - 1].CurrentState == StoneState.Open) return;
-            if (stones[y + 1, x - 1].CurrentState == currentState) return;
-            if (stones[y + 2, x - 2].CurrentState == currentState) return;
+            if (x  - 1 <= stones.GetLength(1) - 1 || y + 1 < 3) return;
+            if (stones[y + 1, x - 1].CurrentState == currentState || stones[y + 1, x - 1].CurrentState == StoneState.Open) return;
+            if (x  - 2 <= stones.GetLength(1) - 1 || y + 2 < 3) return;
+            if (stones[y + 2, x - 2].CurrentState == currentState || stones[y + 1, x - 2].CurrentState == StoneState.Open) return;
+            if (x  - 3 <= stones.GetLength(1) - 1 || y + 3 < 3) return;
             if (stones[y + 3, x - 3].CurrentState != currentState) return;
             CurrentPlayer.Captures++;
             stones[y + 1, x - 1].CurrentState = StoneState.Open;
@@ -150,10 +160,12 @@ namespace Pente.Logic
             Stone[,] stones = gameScreen.Stones;
             if (x < 3 || y < 3) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (stones[y - 1, x - 1].CurrentState == StoneState.Open) return;
-            if (stones[y - 1, x - 1].CurrentState == currentState) return;
-            if (stones[y - 2, x - 2].CurrentState == currentState) return;
-            if (stones[y - 3, x - 3].CurrentState != currentState) return;
+            if (x  - 1 <= stones.GetLength(1) - 1 || y - 1 < 3) return;
+            if (stones[y - 1, x - 1].CurrentState == currentState || stones[y - 1, x - 1].CurrentState == StoneState.Open) return;
+            if (x  - 2 <= stones.GetLength(1) - 1 || y - 2 < 3) return;
+            if (stones[y - 2, x - 2].CurrentState == currentState || stones[y - 2, x - 2].CurrentState == StoneState.Open) return;
+            if (x  - 3 <= stones.GetLength(1) - 1 || y - 3 < 3) return;
+            if (stones[y - 3, x - 3].CurrentState != currentState || stones[y - 3, x - 3].CurrentState == StoneState.Open) return;
             CurrentPlayer.Captures++;
             stones[y - 1, x - 1].CurrentState = StoneState.Open;
             stones[y - 2, x - 2].CurrentState = StoneState.Open;
@@ -164,9 +176,11 @@ namespace Pente.Logic
             Stone[,] stones = gameScreen.Stones;
             if (x > stones.GetLength(1) - 4 || y > stones.GetLength(0) - 4) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (stones[y + 1, x + 1].CurrentState == StoneState.Open) return;
-            if (stones[y + 1, x + 1].CurrentState == currentState) return;
-            if (stones[y + 2, x + 2].CurrentState == currentState) return;
+            if (x  + 1 <= stones.GetLength(1) - 1 || y + 1 < 3) return;
+            if (stones[y + 1, x + 1].CurrentState == currentState || stones[y + 1, x + 1].CurrentState == StoneState.Open) return;
+            if (x  + 2 <= stones.GetLength(1) - 1 || y + 2 < 3) return;
+            if (stones[y + 2, x + 2].CurrentState == currentState || stones[y + 2, x + 2].CurrentState == StoneState.Open) return;
+            if (x  + 3 <= stones.GetLength(1) - 1 || y + 3 < 3) return;
             if (stones[y + 3, x + 3].CurrentState != currentState) return;
             CurrentPlayer.Captures++;
             stones[y + 1, x + 1].CurrentState = StoneState.Open;
@@ -178,9 +192,11 @@ namespace Pente.Logic
             Stone[,] stones = gameScreen.Stones;
             if (x < stones.GetLength(1) - 4 || y < 3) return;
             StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (stones[y - 1, x + 1].CurrentState == StoneState.Open) return;
-            if (stones[y - 1, x + 1].CurrentState == currentState) return;
-            if (stones[y - 2, x + 2].CurrentState == currentState) return;
+            if (x  + 1 <= stones.GetLength(1) - 1 || y - 1 < 3) return;
+            if (stones[y - 1, x + 1].CurrentState == currentState || stones[y - 1, x + 1].CurrentState == StoneState.Open) return;
+            if (x  + 2 <= stones.GetLength(1) - 1 || y - 2 < 3) return;
+            if (stones[y - 2, x + 2].CurrentState == currentState || stones[y - 2, x + 2].CurrentState == StoneState.Open) return;
+            if (x  + 3 <= stones.GetLength(1) - 1 || y - 3 < 3) return;
             if (stones[y - 3, x + 3].CurrentState != currentState) return;
             CurrentPlayer.Captures++;
             stones[y - 1, x + 1].CurrentState = StoneState.Open;
@@ -278,7 +294,7 @@ namespace Pente.Logic
             }
             for (int i = 0; i < 5; i++)
             {
-                if (x + i > stones.GetLength(1) - 1)
+                if (x + i >= stones.GetLength(1) - 1)
                 {
                     break;
                 }
