@@ -22,17 +22,24 @@ namespace Pente.UserControls
     public partial class GameScreen : UserControl
     {
         public Stone[,] Stones { get; set; }
+        private static GameScreen thisScreen;
         public MainWindow TheWindow { get; set; }
         public GameScreen()
         {
             InitializeComponent();
+            thisScreen = this;
         }
         public GameScreen(MainWindow window)
         {
             InitializeComponent();
             TheWindow = window;
+            thisScreen = this;
         }
 
+        public static GameScreen ReturnGameScreen()
+        {
+            return thisScreen;
+        }
         public void CreatePenteBoard(int rows, int columns)
         {
             GameGrid.Children.Clear();
@@ -75,7 +82,7 @@ namespace Pente.UserControls
                         }
                         break;
                     }
-                    case 1:
+                    case 2:
                     {
                         int rows = Stones.GetLength(0);
                         int columns = Stones.GetLength(1);
@@ -97,7 +104,7 @@ namespace Pente.UserControls
                         }
                         if (valid)
                         {
-                            stone.CurrentState = StoneState.White;
+                            stone.CurrentState = StoneState.Black;
                             TheWindow.Logic.SwitchPlayerTurn();
                         }
                         break;
