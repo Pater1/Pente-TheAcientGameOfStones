@@ -1,8 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Pente.Models
 {
+    [Serializable]
     public class Player : INotifyPropertyChanged
     {
         private int captures;
@@ -22,6 +24,13 @@ namespace Pente.Models
             Captures = 0;
         }
 
+        public string PlayerName { get; set; }
+
+
+
+
+
+        [field: NonSerialized]
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

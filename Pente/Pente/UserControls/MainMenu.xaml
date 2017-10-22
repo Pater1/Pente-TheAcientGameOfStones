@@ -17,7 +17,92 @@
                     FontSize="48" Click="NewGameButton_Click"
             />
         </Border>
-        <TextBox x:Name="GridXSize" PreviewTextInput="GridXSize_TextChanged"></TextBox>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Content="    Player1's Name:    "
+                   HorizontalAlignment="Right"
+                   HorizontalContentAlignment="Right"
+                   Background="{StaticResource AccentColor}"
+                   BorderThickness="3"
+                   BorderBrush="Black"
+                   FontSize="19"
+                   Margin="0,10"
+                   Grid.Row="0"
+            />
+            <TextBox x:Name="Player1Name"
+                     HorizontalAlignment="Left" Grid.Column="1"
+                     Grid.Row="0" FontSize="19"
+                     Background="{StaticResource AccentColor}"
+                     BorderThickness="3"
+                     BorderBrush="Black"
+                     Width="200"
+                     Margin="0,10"
+                     />
+            <Label Content="    Player2's Name:    "
+                   HorizontalAlignment="Right"
+                   HorizontalContentAlignment="Right"
+                   Background="{StaticResource AccentColor}"
+                   BorderThickness="3"
+                   BorderBrush="Black"
+                   FontSize="19"
+                   Margin="0,10"
+                   Grid.Row="1"
+            />
+            <TextBox x:Name="Player2Name"
+                     HorizontalAlignment="Left" Grid.Column="1"
+                     Grid.Row="1" FontSize="19"
+                     Background="{StaticResource AccentColor}"
+                     BorderThickness="3"
+                     BorderBrush="Black"
+                     Width="200"
+                     Margin="0,10"/>
+            <Label Content="    Grid Width:    "
+                   HorizontalAlignment="Right"
+                   HorizontalContentAlignment="Right"
+                   Background="{StaticResource AccentColor}"
+                   BorderThickness="3"
+                   BorderBrush="Black"
+                   FontSize="19"
+                   Margin="0,10"
+                   Grid.Row="2"
+                   />
+            <TextBox x:Name="GridXSize" PreviewTextInput="GridXSize_TextChanged"
+                     HorizontalAlignment="Left" Grid.Column="1"
+                     Grid.Row="2" FontSize="19"
+                     Background="{StaticResource AccentColor}"
+                     BorderThickness="3"
+                     BorderBrush="Black"
+                     Width="150"
+                     Margin="0,10"/>
+            <Label Content="    Grid Height:    "
+                   Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   HorizontalContentAlignment="Right"
+                   Background="{StaticResource AccentColor}"
+                   BorderThickness="3"
+                   BorderBrush="Black"
+                   Grid.Row="3"
+                   FontSize="19"
+                   Margin="0,10"
+                   />
+            <TextBox x:Name="GridYSize" PreviewTextInput="GridYSize_TextChanged"
+                     HorizontalAlignment="Left" Grid.Column="1" 
+                     Grid.Row="3" FontSize="19"
+                     Background="{StaticResource AccentColor}"
+                     BorderThickness="3"
+                     BorderBrush="Black"
+                     Width="150"
+                     Margin="0,10"/>
+        </Grid>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

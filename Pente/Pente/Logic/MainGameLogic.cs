@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
+using Microsoft.Win32;
 using Pente.Models;
 using Pente.UserControls;
 
@@ -15,10 +22,12 @@ namespace Pente.Logic
     {
         public MainWindow TheWindow { get; set; }
         private GameScreen gameScreen;
+        private string _filePath;
         private int moveCount;
         public int MoveCount => moveCount;
-        private bool isGameOver = false;
+        private bool isGameOver;
         private int turnsSinceTriaOrTessera = 0;
+        private bool _canSave;
 
         public Player CurrentPlayer { get; set; }
         public Player Player1 { get; set; }
@@ -28,24 +37,25 @@ namespace Pente.Logic
             TheWindow = window;
         }
 
-        public void ChangeScreenToGameScreen()
+        public void ChangeScreenToGameScreen(int width, int height,string player1Name, string player2Name)
         {
             
             TheWindow.Height = MainWindow.GameScreenHeightConst;
             TheWindow.MainGrid.Children.Clear();
-            Player1 = new Player();
-            Player2 = new Player();
+            Player1 = new Player{PlayerName = player1Name};
+            Player2 = new Player{PlayerName = player2Name};
             CurrentPlayer = Player1;
             gameScreen = new GameScreen(TheWindow);
             gameScreen.Player1Status.PlayerCaptures.DataContext = Player1;
             gameScreen.Player2Status.PlayerCaptures.DataContext = Player2;
             TheWindow.MainGrid.Children.Add(gameScreen);
-            StartGame(19,19);
+            StartGame(height,width);
         }
 
         private void StartGame(int height, int width)
         {
             gameScreen.CreatePenteBoard(height, width);
+            _canSave = true;
         }
 
         public void SwitchPlayerTurn()
@@ -57,7 +67,6 @@ namespace Pente.Logic
             else if (!isGameOver)
             {
                 CurrentPlayer = CurrentPlayer == Player1 ? Player2 : Player1;
-                MessageBox.Show($"{MoveCount}");
                 moveCount++;
                 turnsSinceTriaOrTessera++;
                 if (turnsSinceTriaOrTessera >= 4)
@@ -66,7 +75,131 @@ namespace Pente.Logic
                 }
                 return;
             }
-            MessageBox.Show("Gameover");
+            EndGame();
+        }
+
+        private void EndGame()
+        {
+            TheWindow.Height = 350;
+            TheWindow.Width = 250;
+            TheWindow.MainGrid.Children.Clear();
+            TheWindow.MainGrid.Children.Add(new GameOverScreen(TheWindow)
+            {
+                Winner = CurrentPlayer.PlayerName,
+                StyleOfWin = CurrentPlayer.Captures >= 5 ? "5+ captures" : "5 Stones in a row"
+            });
+        }
+
+
+        public void SaveGame()
+        {
+            if (_canSave)
+            {
+                SaveFileDialog sfd = new SaveFileDialog
+                {
+                    InitialDirectory = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase.Trim(@"file:\".ToCharArray()).Remove(0, 3)) + @"\saves"}",
+                    Title = "Browse Files",
+                    DefaultExt = ".pnt",
+                    Filter = "Pente files (*.pnt)|*.pnt",
+                    FilterIndex = 2,
+                    RestoreDirectory = true
+                };
+                sfd.ShowDialog();
+                _filePath = sfd.FileName;
+            }
+            if (_filePath.EndsWith(".pnt"))
+            {
+                StoneSaveTemplate[,] stones = new StoneSaveTemplate[gameScreen.Stones.GetLength(0), gameScreen.Stones.GetLength(1)];
+                for (int i = 0; i < stones.GetLength(0); i++)
+                {
+                    for (int j = 0; j < stones.GetLength(1); j++)
+                    {
+                        stones[i,j] = new StoneSaveTemplate{State = gameScreen.Stones[i,j].CurrentState};
+                    }
+                }
+                SaveFile file = new SaveFile(stones,Player1,Player2,CurrentPlayer,moveCount,gameScreen.GameStatusLabel.Content.ToString());
+                IFormatter formatter = new BinaryFormatter();
+                Stream stream = new FileStream(_filePath,
+                    FileMode.Create,
+                    FileAccess.Write, FileShare.None);
+                formatter.Serialize(stream, file);
+                stream.Close();
+            }
+        }
+
+        public void LoadGame()
+        {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                InitialDirectory = $"{Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase.Trim(@"file:\".ToCharArray()).Remove(0, 3)) + @"\saves"}",
+                Title = "Browse Files",
+                CheckFileExists = true,
+                CheckPathExists = true,
+                DefaultExt = ".pnt",
+                Filter = "Pente files (*.pnt)|*.pnt",
+                FilterIndex = 2,
+                RestoreDirectory = true,
+                ReadOnlyChecked = true,
+                ShowReadOnly = true
+            };
+            ofd.ShowDialog();
+            string path = ofd.FileName;
+            if (path.EndsWith(".pnt"))
+            {
+                _canSave = true;
+                try
+                {
+                    IFormatter formatter = new BinaryFormatter();
+                    FileStream stream = new FileStream(path,
+                        FileMode.Open,
+                        FileAccess.Read,
+                        FileShare.Read);
+                    SaveFile file = (SaveFile)formatter.Deserialize(stream);
+                    stream.Close();
+
+                    TheWindow.Height = MainWindow.GameScreenHeightConst;
+                    TheWindow.MainGrid.Children.Clear();
+                    gameScreen = new GameScreen(TheWindow);
+
+                    Player1 = file.Player1;
+                    gameScreen.Player1Status.PlayerCaptures.DataContext = Player1;
+                    gameScreen.Player1Status.PlayerName = Player1.PlayerName;
+                    Player2 = file.Player2;
+                    gameScreen.Player2Status.PlayerCaptures.DataContext = Player2;
+                    gameScreen.Player2Status.PlayerName = Player2.PlayerName;
+                    CurrentPlayer = file.CurrentPlayer;
+                    moveCount = file.MoveCount;
+                    StoneSaveTemplate[,] stones = file.Stones;
+                    int height = stones.GetLength(0);
+                    int width = stones.GetLength(1);
+
+                    gameScreen.GameGrid.Columns = width;
+                    gameScreen.GameGrid.Rows = height;
+                    gameScreen.Stones = new Stone[height,width];
+                    Stone[,] newStones = gameScreen.Stones;
+                    for (int i = 0; i < height; i++)
+                    {
+                        for (int j = 0; j < width; j++)
+                        {
+                            Stone newGuy = new Stone
+                            {
+                                CurrentState = stones[i, j].State,
+                                Content = $"{i},{j}",
+                                FontSize = 6
+                            };
+                            newStones[i, j] = newGuy;
+                            gameScreen.AddStone(newStones[i,j]);
+                        }
+                    }
+                    TheWindow.MainGrid.Children.Add(gameScreen);
+                    gameScreen.GameStatusLabel.Content = file.GameStatusMessage;
+                }
+                catch (Exception e)
+                {
+                    //MessageBox.Show("Invalid or Currupted Save File -- Unable to load.");
+                    throw e;
+                }
+            }
         }
 
         #region Captures

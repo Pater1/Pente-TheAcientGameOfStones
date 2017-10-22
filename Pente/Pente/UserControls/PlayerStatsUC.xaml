@@ -8,9 +8,9 @@
              mc:Ignorable="d">
     <StackPanel>
         <StackPanel.Resources>
-            <converters:PlayerNumberLabelConverter x:Key="PlayerNumberLabelConverter"/>
+            <converters:PlayerNameLabelConverter x:Key="PlayerNumberLabelConverter"/>
         </StackPanel.Resources>
-        <Label x:Name="MainLabel" Content="{Binding PlayerNumber, Converter={StaticResource PlayerNumberLabelConverter}}" FontSize="24"
+        <Label x:Name="MainLabel" Content="{Binding PlayerName, Converter={StaticResource PlayerNumberLabelConverter}}" FontSize="24"
         />
         <StackPanel Orientation="Horizontal">
             <Label Content="Captures: " FontSize="18"

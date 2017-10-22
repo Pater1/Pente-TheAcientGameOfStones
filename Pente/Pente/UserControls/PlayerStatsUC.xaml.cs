@@ -22,14 +22,14 @@ namespace Pente.UserControls
     /// </summary>
     public partial class PlayerStatsUC : UserControl, INotifyPropertyChanged
     {
-        private int playerNumber;
+        private string playerName;
 
-        public int PlayerNumber
+        public string PlayerName
         {
-            get { return playerNumber; }
+            get { return playerName; }
             set
             {
-                playerNumber = value;
+                playerName = value;
                 OnPropertyChanged();
             }
         }

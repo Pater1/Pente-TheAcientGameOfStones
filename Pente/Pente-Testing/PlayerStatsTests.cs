@@ -23,7 +23,7 @@ namespace Pente_Testing {
             bool callbackChecked = false;
             psu.PropertyChanged += ((e, b) => callbackChecked = true);
 
-            psu.PlayerNumber = psu.PlayerNumber;
+            psu.PlayerName = psu.PlayerName;
             Assert.IsTrue(callbackChecked);
         }
     }

@@ -54,11 +54,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converters\PlayerNumberLabelConverter.cs" />
+    <Compile Include="Converters\StyleOfWinToStringConverter.cs" />
+    <Compile Include="Converters\WinnerNameToStringConverter.cs" />
+    <Compile Include="Converters\PlayerNameLabelConverter.cs" />
     <Compile Include="Logic\MainGameLogic.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\SaveFile.cs" />
     <Compile Include="Models\Stone.cs" />
+    <Compile Include="Models\StoneSaveTemplate.cs" />
     <Compile Include="Models\StoneStates.cs" />
+    <Compile Include="UserControls\GameOverScreen.xaml.cs">
+      <DependentUpon>GameOverScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\GameScreen.xaml.cs">
       <DependentUpon>GameScreen.xaml</DependentUpon>
     </Compile>
@@ -80,6 +87,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\GameOverScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\GameScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -118,6 +129,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\LabelBackground.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

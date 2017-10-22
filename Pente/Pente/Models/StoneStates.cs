@@ -5,6 +5,7 @@ using System.Windows.Media;
 
 namespace Pente.Models
 {
+    [Serializable]
     public enum StoneState
     {
         Open,
@@ -14,13 +15,13 @@ namespace Pente.Models
 
     public static class StoneStateExtension
     {
-        private static readonly Dictionary<StoneState,SolidColorBrush> StoneStateToColor = new Dictionary<StoneState, SolidColorBrush>()
+        private static readonly Dictionary<StoneState,Brush> StoneStateToColor = new Dictionary<StoneState, Brush>()
         {
-            [StoneState.Open] = ((Func<SolidColorBrush>)(() => (SolidColorBrush) Application.Current.Resources["BoardBrush"]))(),
+            [StoneState.Open] = ((Func<Brush>)(() => (Brush) Application.Current.Resources["BoardBrush"]))(),
             [StoneState.White] = ((Func<SolidColorBrush>)(() => (SolidColorBrush)Application.Current.Resources["StoneBrushWhite"]))(),
             [StoneState.Black] = ((Func<SolidColorBrush>)(() => (SolidColorBrush)Application.Current.Resources["StoneBrushBlack"]))()
         };
-        public static SolidColorBrush GetBrush(this StoneState state)
+        public static Brush GetBrush(this StoneState state)
         {
             return StoneStateToColor[state];
         }
