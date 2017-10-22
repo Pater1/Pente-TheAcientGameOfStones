@@ -1,185 +1,157 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Test.Input;
-//using System.Windows.Input;
-using System.Windows.Automation;
-using System.Windows.Automation.Peers;
-using System.Windows.Automation.Provider;
-using System.Windows.Automation.Text;
-//using FlaUI.UIA3;
-//using FlaUI.Core.AutomationElements;
-//using FlaUI.Core;
-//using FlaUI.Core.AutomationElements.Infrastructure;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Media.Imaging;
-using System.IO;
-using System.Diagnostics;
+
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using System.Windows.Controls.Primitives;
+
 using System.Threading;
+using System.Threading.Tasks;
+
+using System.Reflection;
+
+using Pente;
+using Pente.UserControls;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Pente_Testing {
     [TestClass]
     public class GameplayTests {
         [TestMethod]
         public void TestOnlyMiddleStoneOnFirstMove() {
-            Process p = Process.Start(TestResources.ApplicationPath);
-            while (p.MainWindowHandle == IntPtr.Zero || p.MainWindowHandle == null) { }
+            Dispatcher MainDispatcher = Dispatcher.CurrentDispatcher;
 
-            AutomationElement window = AutomationElement.FromHandle(p.MainWindowHandle);
+            App _App = new App();
+            _App.InitializeComponent();
+            Window _Window = new MainWindow();
+            Task.Run(() => {
+                Thread.Sleep(5000);
 
-            AutomationElement startGame = window.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.AutomationIdProperty, "NewGameButton"));
+                MainDispatcher.Invoke(() => {
+                    Button b = FindVisualChild<Button>(_Window, (Func<FrameworkElement, bool>)(
+                        (x) => {
+                            return x.Name == "NewGameButton";
+                        }
+                    ));
+                    MainMenu mm = FindVisualChild<MainMenu>(_Window, (Func<FrameworkElement, bool>)(
+                        (x) => {
+                            return x.GetType() == typeof(MainMenu);
+                        }
+                    ));
 
-            System.Windows.Point pnt = startGame.GetClickablePoint();
-            Mouse.MoveTo(new System.Drawing.Point((int)pnt.X, (int)pnt.Y));
-            Mouse.Click(MouseButton.Left);
-            
-            AutomationElement gameScreen = window.FindFirst(TreeScope.Descendants, new PropertyCondition(AutomationElement.ClassNameProperty, "GameScreen"));
+                   b.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+                });
 
-            AutomationElement[][] grid = GetGridArray(window);
-            for(int x = 0; x < grid.Length; x++) {
-                for(int y = 0; y < grid[x].Length; y++) {
-                    int hx = grid.Length / 2, hy = grid[x].Length / 2;
-                    if(x!=hx&&y!=hy)Click(grid[x][y]);
-                }
-            }
+                Thread.Sleep(1000);
 
-            p.Kill();
+                MainDispatcher.Invoke(() => {
+                    UniformGrid ug = FindVisualChild<UniformGrid>(_Window, (Func<FrameworkElement, bool>)(
+                        (x) => {
+                            return x.Name == "GameGrid";
+                        }
+                    ));
+                    GameScreen gs = FindVisualChild<GameScreen>(_Window, (Func<FrameworkElement, bool>)(
+                        (x) => {
+                            return x.GetType() == typeof(GameScreen);
+                        }
+                    ));
+                    int rows = ug.Rows;
+                    int columns = ug.Columns;
+
+                    UIElementCollection uiec = ug.Children;
+                    foreach(UIElement uie in uiec) {
+                        int index = ug.Children.IndexOf(uie);
+
+                        int row = index / columns;
+                        int column = index % columns;
+
+                        int centerRow = rows / 2;
+                        int centerColumn = columns / 2;
+
+                        int distToCenterRow = Math.Abs(row - centerRow);
+                        int distToCenterColumn = Math.Abs(column - centerColumn);
+
+                        if(distToCenterColumn == 0 && distToCenterRow == 0) {
+                            Click(gs, "StoneOnMouseLeftButtonDown", uie);
+                        }
+                    }
+                });
+
+                Thread.Sleep(1000);
+
+                MainDispatcher.Invoke(() => {
+                    _App.MainWindow.Focus();
+                });
+
+                Thread.Sleep(10000);
+
+                MainDispatcher.Invoke(() => {
+                    _App.Shutdown();
+                });
+            });
+            _App.Run(_Window);
         }
-        private void Click(AutomationElement ae, MouseButton b = MouseButton.Left) {
-            System.Windows.Point pnt = ae.GetClickablePoint();
-            Mouse.MoveTo(new System.Drawing.Point((int)pnt.X, (int)pnt.Y));
-            Mouse.Click(b);
-        }
-        private AutomationElement[][] GetGridArray(AutomationElement window) {
-            List<List<AutomationElement>> tmp = new List<List<AutomationElement>>();
-            while (true) {
-                AutomationElement cell = window.FindFirst(
-                    TreeScope.Descendants, 
-                    new PropertyCondition(
-                        AutomationElement.NameProperty, 
-                        $"0,{tmp.Count}"));
-                if(cell != null) {
-                    tmp.Add(new List<AutomationElement>() {cell});
-                } else {
-                    break;
-                }
-            }
 
-            for(int x = 0; x < tmp.Count; x++) {
-                while (true) {
-                    AutomationElement cell = window.FindFirst(
-                        TreeScope.Descendants, 
-                        new PropertyCondition(
-                            AutomationElement.NameProperty, 
-                            $"{tmp[x].Count},{x}"));
-                    if (cell != null) {
-                        tmp[x].Add(cell);
-                    } else {
-                        break;
+        public static T FindVisualChild<T>(FrameworkElement depObj, Func<FrameworkElement, bool> queary) where T : FrameworkElement {
+            if (depObj != null) {
+                T ret = depObj as T;
+                if(ret != null) {
+                    return ret;
+                }
+
+                Type t = depObj.GetType();
+                PropertyInfo pfi = t.GetProperty("Children");
+                if(pfi != null) {
+                    object o = pfi.GetValue(depObj);
+                    if (o != null) {
+                        UIElementCollection uiec = o as UIElementCollection;
+                        if (uiec != null) {
+                            foreach (UIElement uie in uiec) {
+                                FrameworkElement fr = uie as FrameworkElement;
+                                if (fr != null) {
+                                    ret = FindVisualChild<T>(fr, queary);
+                                    if (ret != null && queary(ret)) {
+                                        return ret;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-            }
-
-            return tmp.Select(x => x.ToArray()).ToArray();
-        }
-        private string NameAllDecendants(AutomationElement ae) {
-            string ret = "";
-            foreach (AutomationElement a in ae.FindAll(TreeScope.Descendants, Condition.TrueCondition)) {
-                ret += $"-{a.Current.Name}";
-            }
-            return ret;
-        }
-        private string NameAllDecendants(AutomationElement[][] ae) {
-            string ret = "";
-            foreach (AutomationElement[] a in ae) {
-                foreach (AutomationElement e in a) {
-                    ret += $"-{e.Current.Name}";
+                pfi = t.GetProperty("Child");
+                if (pfi != null) {
+                    object o = pfi.GetValue(depObj);
+                    if (o != null) {
+                        FrameworkElement uie = o as FrameworkElement;
+                        if (uie != null) {
+                            ret = FindVisualChild<T>(uie, queary);
+                            if (ret != null && queary(ret)) {
+                                return ret;
+                            }
+                        }
+                    }
                 }
+                pfi = t.GetProperty("Content");
+                if (pfi != null) {
+                    object o = pfi.GetValue(depObj);
+                    if (o != null) {
+                        FrameworkElement uie = o as FrameworkElement;
+                        if (uie != null) {
+                            ret = FindVisualChild<T>(uie, queary);
+                            if (ret != null && queary(ret)) {
+                                return ret;
+                            }
+                        }
+                    }
+                } 
             }
-            return ret;
+            return null;
         }
-
-        //private void StartGame(out Application app, out UIA3Automation automation, out Window window, out AutomationElement board) {
-        //    app = Application.Launch(TestResources.ApplicationPath);
-
-        //    automation = new UIA3Automation();
-
-        //    window = app.GetMainWindow(automation);
-        //    Button but = window.FindFirstDescendant(x => x.ByAutomationId("NewGameButton")).AsButton();
-
-        //    but.Click();
-
-        //    board = window.FindFirstDescendant(x => x.ByClassName("GameScreen"));
-
-        //    //string tmp = "";
-        //    //foreach(AutomationElement v in window.FindAllDescendants()) {
-        //    //    tmp += $"-{v.Properties.Name}";
-        //    //}
-        //    //throw new ExecutionEngineException(tmp);
-        //}
-        //[TestMethod]
-        //public void TestOnlyMiddleStoneOnFirstMove() {
-        //    StartGame(out Application app, out UIA3Automation automation, out Window window, out AutomationElement board);
-        //    var v = window.FindFirstDescendant(x => x.ByName("0,0"));
-        //    if(v == null) {
-        //        throw new ExecutionEngineException("v is null");
-        //    }
-        //    Grid gameBoard = v.AsGrid();
-        //    //throw new ExecutionEngineException("Got to gameBoard");
-
-        //    LoadGameDiffCache(gameBoard);
-        //    if (DidGameDiff) {
-        //        throw new ExecutionEngineException("Game diffed before changes");
-        //    }
-        //    int rows = gameBoard.RowCount;
-        //    for(int r = 0; r < rows; r++) {
-        //        GridRow boardRow = gameBoard.GetRowByIndex(r);
-        //        int collumns = boardRow.Cells.Length;
-        //        for(int c = 0; c < collumns; c++) {
-        //            if(!(r == (rows/2+1) && c == (collumns / 2 + 1)) ) {
-        //                GridCell cell = boardRow.Cells[c];
-        //                cell.Click();
-        //            }
-        //        }
-        //    }
-        //    if (DidGameDiff) {
-        //        throw new ExecutionEngineException("Game diffed after changes, before should");
-        //    }
-        //    if (DidGameDiff) {
-        //        throw new ExecutionEngineException("Game diffed after changes, before should");
-        //    }
-
-        //    window.Close();
-        //    automation.Dispose();
-        //}
-
-        //BitmapImage cachedState;
-        //AutomationElement cachedElement;
-        //private void LoadGameDiffCache(AutomationElement ell) {
-        //    cachedState = ell.CaptureWpf();
-        //    cachedElement = ell;
-        //}
-        //private bool DidGameDiff {
-        //    get {
-        //        BitmapImage bp = cachedElement.CaptureWpf();
-        //        using (Stream s1 = bp.StreamSource) {
-        //            using (Stream s2 = cachedState.StreamSource) {
-        //                while (s1.CanRead && s2.CanRead) {
-        //                    byte[] b1 = new byte[1];
-        //                    s1.Read(b1, 0, 1);
-
-        //                    byte[] b2 = new byte[1];
-        //                    s2.Read(b2, 0, 1);
-
-        //                    if (b1[0] != b2[0]) {
-        //                        return true;
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        return false;
-        //    }
-        //}
+        private void Click(object logicHolder, string funcReflect, object clicked) {
+            Type t = logicHolder.GetType();
+            MethodInfo meth = t.GetMethod(funcReflect, BindingFlags.NonPublic | BindingFlags.Instance);
+            meth.Invoke(logicHolder, new object[] { clicked, null });
+        }
     }
 }

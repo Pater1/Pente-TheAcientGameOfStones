@@ -22,23 +22,23 @@ namespace Pente.UserControls
     public partial class GameScreen : UserControl
     {
         public Stone[,] Stones { get; set; }
-        private static GameScreen thisScreen;
+        public static GameScreen ThisScreen { get; private set; }
         public MainWindow TheWindow { get; set; }
         public GameScreen()
         {
             InitializeComponent();
-            thisScreen = this;
+            ThisScreen = this;
         }
         public GameScreen(MainWindow window)
         {
             InitializeComponent();
             TheWindow = window;
-            thisScreen = this;
+            ThisScreen = this;
         }
 
         public static GameScreen ReturnGameScreen()
         {
-            return thisScreen;
+            return ThisScreen;
         }
         public void CreatePenteBoard(int rows, int columns)
         {
