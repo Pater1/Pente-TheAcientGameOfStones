@@ -22,6 +22,11 @@ namespace Pente.Models
             set
             {
                 currentState = value;
+                if (currentState != StoneState.Open)
+                {
+                    BorderThickness = new Thickness(1);
+                    BorderBrush = new SolidColorBrush(Colors.Black);
+                }
                 Background = currentState.GetBrush();
             }
         }
@@ -29,8 +34,7 @@ namespace Pente.Models
         public Stone()
         {
             CurrentState = StoneState.Open;
-            BorderThickness = new Thickness(1);
-            BorderBrush = new SolidColorBrush(Colors.Black);
+            Foreground = new SolidColorBrush(Colors.Transparent);
         }
 
     }

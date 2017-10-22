@@ -20,12 +20,22 @@ namespace Pente {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        public const int GameScreenHeightConst = 525;
+        public const int GameScreenHeightConst = 600;
         public MainGameLogic Logic { get; set; }
         public MainWindow() {
             InitializeComponent();
             Logic = new MainGameLogic(this);
             MainGrid.Children.Add(new MainMenu(this));
+        }
+
+        private void SaveGame(object sender, ExecutedRoutedEventArgs e)
+        {
+            Logic?.SaveGame();
+        }
+
+        private void LoadGame(object sender, ExecutedRoutedEventArgs e)
+        {
+            Logic?.LoadGame();
         }
     }
 }

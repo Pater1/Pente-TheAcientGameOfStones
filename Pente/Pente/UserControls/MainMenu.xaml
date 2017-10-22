@@ -17,17 +17,111 @@
                     FontSize="48" Click="NewGameButton_Click"
             />
         </Border>
-        <Border Width="180" Height="90" BorderBrush="Black" BorderThickness="2" Margin="50">
-            <Button x:Name="Rules" Content="Rules" 
-                    Background="{StaticResource AccentColor}"
-                    FontSize="48" Click="Rules_Click"
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Content="    Player1's Name:    "
+                   HorizontalAlignment="Right"
+                   HorizontalContentAlignment="Right"
+                   Background="{StaticResource AccentColor}"
+                   BorderThickness="3"
+                   BorderBrush="Black"
+                   FontSize="19"
+                   Margin="0,10"
+                   Grid.Row="0"
             />
-        </Border>
-        <Border Width="115" Height="85" BorderBrush="Black" BorderThickness="2" Margin="50">
-            <Button x:Name="Exit" Content="Exit" 
-                    Background="{StaticResource AccentColor}"
-                    FontSize="48" Click="Exit_Click"
+            <TextBox x:Name="Player1Name"
+                     HorizontalAlignment="Left" Grid.Column="1"
+                     Grid.Row="0" FontSize="19"
+                     Background="{StaticResource AccentColor}"
+                     BorderThickness="3"
+                     BorderBrush="Black"
+                     Width="200"
+                     Margin="0,10"
+                     />
+            <Label Content="    Player2's Name:    "
+                   HorizontalAlignment="Right"
+                   HorizontalContentAlignment="Right"
+                   Background="{StaticResource AccentColor}"
+                   BorderThickness="3"
+                   BorderBrush="Black"
+                   FontSize="19"
+                   Margin="0,10"
+                   Grid.Row="1"
             />
-        </Border>
+            <TextBox x:Name="Player2Name"
+                     HorizontalAlignment="Left" Grid.Column="1"
+                     Grid.Row="1" FontSize="19"
+                     Background="{StaticResource AccentColor}"
+                     BorderThickness="3"
+                     BorderBrush="Black"
+                     Width="200"
+                     Margin="0,10"/>
+            <Label Content="    Grid Width:    "
+                   HorizontalAlignment="Right"
+                   HorizontalContentAlignment="Right"
+                   Background="{StaticResource AccentColor}"
+                   BorderThickness="3"
+                   BorderBrush="Black"
+                   FontSize="19"
+                   Margin="0,10"
+                   Grid.Row="2"
+                   />
+            <TextBox x:Name="GridXSize" PreviewTextInput="GridXSize_TextChanged"
+                     HorizontalAlignment="Left" Grid.Column="1"
+                     Grid.Row="2" FontSize="19"
+                     Background="{StaticResource AccentColor}"
+                     BorderThickness="3"
+                     BorderBrush="Black"
+                     Width="150"
+                     Margin="0,10"/>
+            <Label Content="    Grid Height:    "
+                   Grid.Column="0"
+                   HorizontalAlignment="Right"
+                   HorizontalContentAlignment="Right"
+                   Background="{StaticResource AccentColor}"
+                   BorderThickness="3"
+                   BorderBrush="Black"
+                   Grid.Row="3"
+                   FontSize="19"
+                   Margin="0,10"
+                   />
+            <TextBox x:Name="GridYSize" PreviewTextInput="GridYSize_TextChanged"
+                     HorizontalAlignment="Left" Grid.Column="1" 
+                     Grid.Row="3" FontSize="19"
+                     Background="{StaticResource AccentColor}"
+                     BorderThickness="3"
+                     BorderBrush="Black"
+                     Width="150"
+                     Margin="0,10"/>
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Width="180" Height="90" BorderBrush="Black" BorderThickness="2" Margin="50"
+                    HorizontalAlignment="Right" Grid.Column="0">
+                <Button x:Name="Rules" Content="Rules" 
+                        Background="{StaticResource AccentColor}"
+                        FontSize="48" Click="Rules_Click"
+                />
+            </Border>
+            <Border Width="115" Height="85" BorderBrush="Black" BorderThickness="2" Margin="50"
+                HorizontalAlignment="Left" Grid.Column="1">
+                <Button x:Name="Exit" Content="Exit" 
+                        Background="{StaticResource AccentColor}"
+                        FontSize="48" Click="Exit_Click"
+                />
+            </Border>
+        </Grid>
     </StackPanel>
 </UserControl>

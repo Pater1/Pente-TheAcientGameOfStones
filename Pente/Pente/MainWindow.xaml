@@ -6,7 +6,25 @@
         xmlns:local="clr-namespace:Pente"
         mc:Ignorable="d"
         Title="Pente" Height="825" Width="725">
-    <Grid x:Name="MainGrid">
-        
+    <Window.CommandBindings>
+        <CommandBinding Command="Save"
+                        Executed="SaveGame"/>
+        <CommandBinding Command="Open"
+                        Executed="LoadGame"/>
+    </Window.CommandBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="97*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="Save"
+                      Command="Save"/>
+            <MenuItem Header="Load"
+                      Command="Open"/>
+        </Menu>
+        <Grid x:Name="MainGrid" Grid.Row="1">
+
+        </Grid>
     </Grid>
 </Window>
