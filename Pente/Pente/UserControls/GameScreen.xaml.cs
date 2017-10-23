@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,26 +21,39 @@ namespace Pente.UserControls
     /// <summary>
     /// Interaction logic for GameScreen.xaml
     /// </summary>
-    public partial class GameScreen : UserControl
+    public partial class GameScreen : UserControl, INotifyPropertyChanged
     {
         public Stone[,] Stones { get; set; }
-        public static GameScreen ThisScreen { get; private set; }
+        private static GameScreen thisScreen;
         public MainWindow TheWindow { get; set; }
+        private int time;
+
+        public int Time
+        {
+            get { return time; }
+            set
+            {
+                time = value; 
+                OnPropertyChanged();
+            }
+        }
+
         public GameScreen()
         {
             InitializeComponent();
-            ThisScreen = this;
+            thisScreen = this;
         }
         public GameScreen(MainWindow window)
         {
             InitializeComponent();
             TheWindow = window;
-            ThisScreen = this;
+            GameTimer.DataContext = this;
+            thisScreen = this;
         }
 
         public static GameScreen ReturnGameScreen()
         {
-            return ThisScreen;
+            return thisScreen;
         }
         public void CreatePenteBoard(int rows, int columns)
         {
@@ -138,6 +153,13 @@ namespace Pente.UserControls
                         break;
                 }
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

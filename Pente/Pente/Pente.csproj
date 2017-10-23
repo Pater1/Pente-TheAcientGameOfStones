@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\TimerIntToSecondConverter.cs" />
     <Compile Include="Converters\StyleOfWinToStringConverter.cs" />
     <Compile Include="Converters\WinnerNameToStringConverter.cs" />
     <Compile Include="Converters\PlayerNameLabelConverter.cs" />
