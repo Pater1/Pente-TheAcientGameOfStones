@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Pente.UserControls"
+             xmlns:converters="clr-namespace:Pente.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="525" d:DesignWidth="725">
     <Grid Background="{StaticResource BackgroundColor}">
+        <Grid.Resources>
+            <converters:TimerIntToSecondConverter x:Key="IntToSecondConverter"/>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
@@ -27,6 +31,7 @@
             <local:PlayerStatsUC x:Name="Player2Status"/>
             <Label Content="Game Status:" FontSize="24" Margin="0 20"/>
             <Label x:Name="GameStatusLabel" Content="Game in Progress" FontSize="18"/>
+            <Label x:Name="GameTimer" Content="{Binding Path=Time, Converter={StaticResource IntToSecondConverter}}" FontSize="18"/>
         </StackPanel>
     </Grid>
 </UserControl>

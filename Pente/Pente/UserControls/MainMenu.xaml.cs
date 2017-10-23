@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Pente.Logic;
 
 namespace Pente.UserControls
 {
@@ -34,7 +35,7 @@ namespace Pente.UserControls
 
         private void NewGameButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(Player1Name.Text) || !string.IsNullOrEmpty(Player2Name.Text))
+            if (!string.IsNullOrEmpty(Player1Name.Text) && !string.IsNullOrEmpty(Player2Name.Text))
             {
 
                 if (int.TryParse(GridXSize.Text, out int x) && int.TryParse(GridYSize.Text, out int y))
@@ -51,21 +52,37 @@ namespace Pente.UserControls
                                 }
                                 else
                                 {
+                                    if (MainGameLogic.ThrowErrorInsteadOfMessageBox)
+                                    {
+                                        throw new Exception("The height of the grid must be odd.");
+                                    }
                                     MessageBox.Show("The height of the grid must be odd.");
                                 }
                             }
                             else
                             {
+                                if (MainGameLogic.ThrowErrorInsteadOfMessageBox)
+                                {
+                                    throw new Exception("The height of the grid must be at least 9 and at most 39.");
+                                }
                                 MessageBox.Show("The height of the grid must be at least 9 and at most 39.");
                             }
                         }
                         else
                         {
+                            if (MainGameLogic.ThrowErrorInsteadOfMessageBox)
+                            {
+                                throw new Exception("The width of the grid must be odd.");
+                            }
                             MessageBox.Show("The width of the grid must be odd.");
                         }
                     }
                     else
                     {
+                        if (MainGameLogic.ThrowErrorInsteadOfMessageBox)
+                        {
+                            throw new Exception("The width of the grid must be at least 9 and at most 39.");
+                        }
                         MessageBox.Show("The width of the grid must be at least 9 and at most 39.");
                     }
                 }
@@ -76,6 +93,10 @@ namespace Pente.UserControls
             }
             else
             {
+                if (MainGameLogic.ThrowErrorInsteadOfMessageBox)
+                {
+                    throw new Exception("Both players need names.");
+                }
                 MessageBox.Show("Both players need names.");
             }
         }
@@ -93,7 +114,14 @@ namespace Pente.UserControls
             rules +=
                 "When a player has 3 stones in a row that are unblocked, there will be a status\n\t label in the right side that will stay for 3 rounds.\n";
             rules += "If four stones have at least one side unblocked, there will also be an alert for 3\n\t turns.\n";
-            MessageBox.Show(rules);
+            if (MainGameLogic.ThrowErrorInsteadOfMessageBox)
+            {
+                throw new Exception(rules);
+            }
+            else
+            {
+                MessageBox.Show(rules);    
+            }
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

@@ -6,12 +6,14 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
+using System.Windows.Threading;
 using Microsoft.Win32;
 using Pente.Models;
 using Pente.UserControls;
@@ -21,20 +23,50 @@ namespace Pente.Logic
     public class MainGameLogic
     {
         public MainWindow TheWindow { get; set; }
-        private GameScreen gameScreen;
-        private string _filePath;
+        public static bool ThrowErrorInsteadOfMessageBox = false;
         private int moveCount;
         public int MoveCount => moveCount;
+        private GameScreen gameScreen;
+        private string _filePath;
         private bool isGameOver;
         private int turnsSinceTriaOrTessera = 0;
         private bool _canSave;
-
+        private Thread t;
+        private Dispatcher d;
+        private const int timerMax = 5000;
+        private int timerCur;
         public Player CurrentPlayer { get; set; }
         public Player Player1 { get; set; }
         public Player Player2 { get; set; }
+
         public MainGameLogic(MainWindow window)
         {
             TheWindow = window;
+            timerCur = timerMax;
+            d = Dispatcher.CurrentDispatcher;
+            t = new Thread(() =>
+            {
+                while (true)
+                {
+                    while (timerCur >= 0)
+                    {
+                        Thread.Sleep(1);
+                        if (gameScreen != null)
+                        {
+                            gameScreen.Time = timerCur / 1000;
+                        }
+                        timerCur--;
+                    }
+                    try
+                    {
+                        d.Invoke(TimerFinished);
+                    }
+                    catch
+                    {
+                        break;
+                    }
+                }
+            });
         }
 
         public void ChangeScreenToGameScreen(int width, int height,string player1Name, string player2Name)
@@ -56,10 +88,12 @@ namespace Pente.Logic
         {
             gameScreen.CreatePenteBoard(height, width);
             _canSave = true;
+            t.Start();
         }
 
         public void SwitchPlayerTurn()
         {
+            timerCur = timerMax;
             if (CurrentPlayer.Captures >= 5)
             {
                 isGameOver = true;
@@ -88,9 +122,9 @@ namespace Pente.Logic
                 Winner = CurrentPlayer.PlayerName,
                 StyleOfWin = CurrentPlayer.Captures >= 5 ? "5+ captures" : "5 Stones in a row"
             });
+            timerCur = -1;
         }
-
-
+        
         public void SaveGame()
         {
             if (_canSave)
@@ -193,13 +227,33 @@ namespace Pente.Logic
                     }
                     TheWindow.MainGrid.Children.Add(gameScreen);
                     gameScreen.GameStatusLabel.Content = file.GameStatusMessage;
+                    timerCur = timerMax;
                 }
                 catch (Exception e)
                 {
-                    //MessageBox.Show("Invalid or Currupted Save File -- Unable to load.");
-                    throw e;
+                    if (ThrowErrorInsteadOfMessageBox)
+                    {
+                        throw new Exception("Invalid or Currupted Save File -- Unable to load.");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid or Currupted Save File -- Unable to load.");
+                    }
                 }
             }
+        }
+
+        private void TimerFinished()
+        {
+            if (ThrowErrorInsteadOfMessageBox)
+            {
+                throw new Exception($"{CurrentPlayer.PlayerName} took too long to take a turn.\nSkipping their turn...");
+            }
+            else
+            {
+                MessageBox.Show($"{CurrentPlayer.PlayerName} took too long to take a turn.\nSkipping their turn...");
+            }
+            SwitchPlayerTurn();
         }
 
         #region Captures
