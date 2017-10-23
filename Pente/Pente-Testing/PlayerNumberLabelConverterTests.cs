@@ -4,10 +4,10 @@ using Pente.Converters;
 
 namespace Pente_Testing {
     [TestClass]
-    public class PlayerNumberLabelConverterTests {
+    public class PlayerNameLabelConverterTests {
         [TestMethod]
         public void TestIntRange() {
-            PlayerNumberLabelConverter conv = new PlayerNumberLabelConverter();
+            PlayerNameLabelConverter conv = new PlayerNameLabelConverter();
             int num = 2;
 
             Action<int> test = (Action<int>)((i) => {
@@ -19,12 +19,10 @@ namespace Pente_Testing {
 
                 string p_ative = pos as string;
                 string n_ative = neg as string;
-
-                Assert.IsTrue(p_ative.Contains("Player"));
+                
                 Assert.IsTrue(p_ative.Contains("Stats"));
                 Assert.IsTrue(p_ative.Contains(i.ToString()));
-
-                Assert.IsTrue(n_ative.Contains("Player"));
+                
                 Assert.IsTrue(n_ative.Contains("Stats"));
                 Assert.IsTrue(n_ative.Contains((-i).ToString()));
             });

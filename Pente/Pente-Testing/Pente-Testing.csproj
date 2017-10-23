@@ -98,6 +98,7 @@
     <Compile Include="PlayerStatsTests.cs" />
     <Compile Include="PlayerNumberLabelConverterTests.cs" />
     <Compile Include="MainWindowTests.cs" />
+    <Compile Include="UIAutomationHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
