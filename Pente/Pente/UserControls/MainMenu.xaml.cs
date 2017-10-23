@@ -56,7 +56,7 @@ namespace Pente.UserControls
                                     {
                                         throw new Exception("The height of the grid must be odd.");
                                     }
-                                    MessageBox.Show("The height of the grid must be odd.");
+                                    MessageBox.Show(TheWindow, "The height of the grid must be odd.");
                                 }
                             }
                             else
@@ -65,7 +65,7 @@ namespace Pente.UserControls
                                 {
                                     throw new Exception("The height of the grid must be at least 9 and at most 39.");
                                 }
-                                MessageBox.Show("The height of the grid must be at least 9 and at most 39.");
+                                MessageBox.Show(TheWindow, "The height of the grid must be at least 9 and at most 39.");
                             }
                         }
                         else
@@ -74,7 +74,7 @@ namespace Pente.UserControls
                             {
                                 throw new Exception("The width of the grid must be odd.");
                             }
-                            MessageBox.Show("The width of the grid must be odd.");
+                            MessageBox.Show(TheWindow, "The width of the grid must be odd.");
                         }
                     }
                     else
@@ -83,7 +83,7 @@ namespace Pente.UserControls
                         {
                             throw new Exception("The width of the grid must be at least 9 and at most 39.");
                         }
-                        MessageBox.Show("The width of the grid must be at least 9 and at most 39.");
+                        MessageBox.Show(TheWindow, "The width of the grid must be at least 9 and at most 39.");
                     }
                 }
                 else
@@ -97,7 +97,7 @@ namespace Pente.UserControls
                 {
                     throw new Exception("Both players need names.");
                 }
-                MessageBox.Show("Both players need names.");
+                MessageBox.Show(TheWindow, "Both players need names.");
             }
         }
 
@@ -120,7 +120,7 @@ namespace Pente.UserControls
             }
             else
             {
-                MessageBox.Show(rules);    
+                MessageBox.Show(TheWindow, rules);    
             }
         }
 

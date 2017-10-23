@@ -89,15 +89,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameOverScreenTests.cs" />
     <Compile Include="GameplayTests.cs" />
-    <Compile Include="TestResources.cs" />
     <Compile Include="GUIColorSchemeAdheranceTests.cs" />
     <Compile Include="MainMenuTests.cs" />
-    <Compile Include="StonesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlayerStatsTests.cs" />
     <Compile Include="PlayerNumberLabelConverterTests.cs" />
-    <Compile Include="MainWindowTests.cs" />
     <Compile Include="UIAutomationHelper.cs" />
   </ItemGroup>
   <ItemGroup>

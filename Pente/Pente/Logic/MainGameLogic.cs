@@ -57,6 +57,7 @@ namespace Pente.Logic
                         }
                         timerCur--;
                     }
+                    if (timerCur < -5) return;
                     try
                     {
                         d.Invoke(TimerFinished);
@@ -132,7 +133,7 @@ namespace Pente.Logic
                 Winner = isStaleMate? "No one" : CurrentPlayer.PlayerName,
                 StyleOfWin = isStaleMate ? "StaleMate" : CurrentPlayer.Captures >= 5 ? "5+ captures" : "5 Stones in a row"
             });
-            timerCur = -1;
+            timerCur = -10;
         }
         
         public void SaveGame()
@@ -238,6 +239,7 @@ namespace Pente.Logic
                     TheWindow.MainGrid.Children.Add(gameScreen);
                     gameScreen.GameStatusLabel.Content = file.GameStatusMessage;
                     timerCur = timerMax;
+                    t.Start();
                 }
                 catch (Exception e)
                 {
@@ -247,7 +249,7 @@ namespace Pente.Logic
                     }
                     else
                     {
-                        MessageBox.Show("Invalid or Currupted Save File -- Unable to load.");
+                        MessageBox.Show(TheWindow, "Invalid or Currupted Save File -- Unable to load.");
                     }
                 }
             }
@@ -255,13 +257,14 @@ namespace Pente.Logic
 
         private void TimerFinished()
         {
+            if (timerCur < -5) return;
             if (ThrowErrorInsteadOfMessageBox)
             {
                 throw new Exception($"{CurrentPlayer.PlayerName} took too long to take a turn.\nSkipping their turn...");
             }
             else
             {
-                MessageBox.Show($"{CurrentPlayer.PlayerName} took too long to take a turn.\nSkipping their turn...");
+                MessageBox.Show(TheWindow, $"{CurrentPlayer.PlayerName} took too long to take a turn.\nSkipping their turn...");
             }
             SwitchPlayerTurn();
         }
@@ -280,124 +283,140 @@ namespace Pente.Logic
         }
         private void CheckCaptureLeft(int x, int y)
         {
-            Stone[,] stones = gameScreen.Stones;
-            if (x < 3) return;
-            StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (x - 1 < 0) return;
-            if (stones[y, x - 1].CurrentState == currentState || stones[y, x - 1].CurrentState == StoneState.Open) return;
-            if (x - 2 < 0) return;
-            if (stones[y, x - 2].CurrentState == currentState || stones[y, x - 2].CurrentState == StoneState.Open) return;
-            if (x - 3 < 0) return;
-            if (stones[y, x - 3].CurrentState != currentState) return;
-            CurrentPlayer.Captures++;
-            stones[y, x - 1].CurrentState = StoneState.Open;
-            stones[y, x - 2].CurrentState = StoneState.Open;
+            try {
+                Stone[,] stones = gameScreen.Stones;
+                if (x < 3) return;
+                StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
+                if (x - 1 < 0) return;
+                if (stones[y, x - 1].CurrentState == currentState || stones[y, x - 1].CurrentState == StoneState.Open) return;
+                if (x - 2 < 0) return;
+                if (stones[y, x - 2].CurrentState == currentState || stones[y, x - 2].CurrentState == StoneState.Open) return;
+                if (x - 3 < 0) return;
+                if (stones[y, x - 3].CurrentState != currentState) return;
+                CurrentPlayer.Captures++;
+                stones[y, x - 1].CurrentState = StoneState.Open;
+                stones[y, x - 2].CurrentState = StoneState.Open;
+            } catch { }
         }
         private void CheckCaptureUp(int x, int y)
         {
-            Stone[,] stones = gameScreen.Stones;
-            if (y < 3) return;
-            StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (y  - 1 < 0) return;
-            if (stones[y - 1, x].CurrentState == currentState || stones[y - 1, x].CurrentState == StoneState.Open) return;
-            if (y  - 2 < 0) return;
-            if (stones[y - 2, x].CurrentState == currentState || stones[y - 2, x].CurrentState == StoneState.Open) return;
-            if (y  - 3 < 0) return;
-            if (stones[y - 3, x].CurrentState != currentState) return;
-            CurrentPlayer.Captures++;
-            stones[y - 1, x].CurrentState = StoneState.Open;
-            stones[y - 2, x].CurrentState = StoneState.Open;
+            try { 
+                Stone[,] stones = gameScreen.Stones;
+                if (y < 3) return;
+                StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
+                if (y  - 1 < 0) return;
+                if (stones[y - 1, x].CurrentState == currentState || stones[y - 1, x].CurrentState == StoneState.Open) return;
+                if (y  - 2 < 0) return;
+                if (stones[y - 2, x].CurrentState == currentState || stones[y - 2, x].CurrentState == StoneState.Open) return;
+                if (y  - 3 < 0) return;
+                if (stones[y - 3, x].CurrentState != currentState) return;
+                CurrentPlayer.Captures++;
+                stones[y - 1, x].CurrentState = StoneState.Open;
+                stones[y - 2, x].CurrentState = StoneState.Open;
+            } catch { }
         }
         private void CheckCaptureRight(int x, int y)
         {
-            Stone[,] stones = gameScreen.Stones;
-            if (x > stones.GetLength(1) - 4) return;
-            StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (x + 1 > stones.GetLength(1) - 1) return;
-            if (stones[y, x + 1].CurrentState == currentState || stones[y, x + 1].CurrentState == StoneState.Open) return;
-            if (x + 2 > stones.GetLength(1) - 1) return;
-            if (stones[y, x + 2].CurrentState == currentState || stones[y, x + 2].CurrentState == StoneState.Open) return;
-            if (x + 3 > stones.GetLength(1) - 1) return;
-            if (stones[y, x + 3].CurrentState != currentState) return;
-            CurrentPlayer.Captures++;
-            stones[y, x + 1].CurrentState = StoneState.Open;
-            stones[y, x + 2].CurrentState = StoneState.Open;
+            try { 
+                Stone[,] stones = gameScreen.Stones;
+                if (x > stones.GetLength(1) - 4) return;
+                StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
+                if (x + 1 > stones.GetLength(1) - 1) return;
+                if (stones[y, x + 1].CurrentState == currentState || stones[y, x + 1].CurrentState == StoneState.Open) return;
+                if (x + 2 > stones.GetLength(1) - 1) return;
+                if (stones[y, x + 2].CurrentState == currentState || stones[y, x + 2].CurrentState == StoneState.Open) return;
+                if (x + 3 > stones.GetLength(1) - 1) return;
+                if (stones[y, x + 3].CurrentState != currentState) return;
+                CurrentPlayer.Captures++;
+                stones[y, x + 1].CurrentState = StoneState.Open;
+                stones[y, x + 2].CurrentState = StoneState.Open;
+            } catch { }
         }
         private void CheckCaptureDown(int x, int y)
         {
-            Stone[,] stones = gameScreen.Stones;
-            if (y > stones.GetLength(0) - 4) return;
-            StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (y + 1 > stones.GetLength(0) - 1) return;
-            if (stones[y + 1, x].CurrentState == currentState || stones[y + 1, x].CurrentState == StoneState.Open) return;
-            if (y + 2 > stones.GetLength(0) - 1) return;
-            if (stones[y + 2, x].CurrentState == currentState || stones[y + 2, x].CurrentState == StoneState.Open) return;
-            if (y + 3 > stones.GetLength(0) - 1) return;
-            if (stones[y + 3, x].CurrentState != currentState) return;
-            CurrentPlayer.Captures++;
-            stones[y + 1, x].CurrentState = StoneState.Open;
-            stones[y + 2, x].CurrentState = StoneState.Open;
+            try { 
+                Stone[,] stones = gameScreen.Stones;
+                if (y > stones.GetLength(0) - 4) return;
+                StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
+                if (y + 1 > stones.GetLength(0) - 1) return;
+                if (stones[y + 1, x].CurrentState == currentState || stones[y + 1, x].CurrentState == StoneState.Open) return;
+                if (y + 2 > stones.GetLength(0) - 1) return;
+                if (stones[y + 2, x].CurrentState == currentState || stones[y + 2, x].CurrentState == StoneState.Open) return;
+                if (y + 3 > stones.GetLength(0) - 1) return;
+                if (stones[y + 3, x].CurrentState != currentState) return;
+                CurrentPlayer.Captures++;
+                stones[y + 1, x].CurrentState = StoneState.Open;
+                stones[y + 2, x].CurrentState = StoneState.Open;
+            } catch { }
         }
         private void CheckCaptureDLDiagonal(int x, int y)
         {
-            Stone[,] stones = gameScreen.Stones;
-            StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (x - 1 < 0 || y + 1 > stones.GetLength(0) - 1) return;
-            if (stones[y + 1, x - 1].CurrentState == currentState || stones[y + 1, x - 1].CurrentState == StoneState.Open) return;
-            if (x - 2 < 0 || y + 2 > stones.GetLength(0) - 1) return;
-            if (stones[y + 2, x - 2].CurrentState == currentState || stones[y + 2, x - 2].CurrentState == StoneState.Open) return;
-            if (x - 3 < 0 || y + 3 > stones.GetLength(0) - 1) return;
-            if (stones[y + 3, x - 3].CurrentState != currentState) return;
-            CurrentPlayer.Captures++;
-            stones[y + 1, x - 1].CurrentState = StoneState.Open;
-            stones[y + 2, x - 2].CurrentState = StoneState.Open;
+            try {
+                Stone[,] stones = gameScreen.Stones;
+                StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
+                if (x - 1 < 0 || y + 1 > stones.GetLength(0) - 1) return;
+                if (stones[y + 1, x - 1].CurrentState == currentState || stones[y + 1, x - 1].CurrentState == StoneState.Open) return;
+                if (x - 2 < 0 || y + 2 > stones.GetLength(0) - 1) return;
+                if (stones[y + 2, x - 2].CurrentState == currentState || stones[y + 2, x - 2].CurrentState == StoneState.Open) return;
+                if (x - 3 < 0 || y + 3 > stones.GetLength(0) - 1) return;
+                if (stones[y + 3, x - 3].CurrentState != currentState) return;
+                CurrentPlayer.Captures++;
+                stones[y + 1, x - 1].CurrentState = StoneState.Open;
+                stones[y + 2, x - 2].CurrentState = StoneState.Open;
+            } catch { }
 
         }
         private void CheckCaptureULDiagonal(int x, int y)
         {
-            Stone[,] stones = gameScreen.Stones;
-            if (x < 3 || y < 3) return;
-            StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (x  - 1 < 0 || y - 1 < 0) return;
-            if (stones[y - 1, x - 1].CurrentState == currentState || stones[y - 1, x - 1].CurrentState == StoneState.Open) return;
-            if (x  - 2 < 0 || y - 2 < 0) return;
-            if (stones[y - 2, x - 2].CurrentState == currentState || stones[y - 2, x - 2].CurrentState == StoneState.Open) return;
-            if (x  - 3 < 0 || y - 3 < 0) return;
-            if (stones[y - 3, x - 3].CurrentState != currentState || stones[y - 3, x - 3].CurrentState == StoneState.Open) return;
-            CurrentPlayer.Captures++;
-            stones[y - 1, x - 1].CurrentState = StoneState.Open;
-            stones[y - 2, x - 2].CurrentState = StoneState.Open;
+            try {
+                Stone[,] stones = gameScreen.Stones;
+                if (x < 3 || y < 3) return;
+                StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
+                if (x  - 1 < 0 || y - 1 < 0) return;
+                if (stones[y - 1, x - 1].CurrentState == currentState || stones[y - 1, x - 1].CurrentState == StoneState.Open) return;
+                if (x  - 2 < 0 || y - 2 < 0) return;
+                if (stones[y - 2, x - 2].CurrentState == currentState || stones[y - 2, x - 2].CurrentState == StoneState.Open) return;
+                if (x  - 3 < 0 || y - 3 < 0) return;
+                if (stones[y - 3, x - 3].CurrentState != currentState || stones[y - 3, x - 3].CurrentState == StoneState.Open) return;
+                CurrentPlayer.Captures++;
+                stones[y - 1, x - 1].CurrentState = StoneState.Open;
+                stones[y - 2, x - 2].CurrentState = StoneState.Open;
+            } catch { }
 
         }
         private void CheckCaptureDRDiagonal(int x, int y)
         {
-            Stone[,] stones = gameScreen.Stones;
-            if (x > stones.GetLength(1) - 4 || y > stones.GetLength(0) - 4) return;
-            StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (x  + 1 > stones.GetLength(1) - 1 || y + 1 > stones.GetLength(0) - 1) return;
-            if (stones[y + 1, x + 1].CurrentState == currentState || stones[y + 1, x + 1].CurrentState == StoneState.Open) return;
-            if (x  + 2 > stones.GetLength(1) - 1 || y + 2 > stones.GetLength(0) - 1) return;
-            if (stones[y + 2, x + 2].CurrentState == currentState || stones[y + 2, x + 2].CurrentState == StoneState.Open) return;
-            if (x  + 3 > stones.GetLength(1) - 1 || y + 3 > stones.GetLength(0) - 1) return;
-            if (stones[y + 3, x + 3].CurrentState != currentState) return;
-            CurrentPlayer.Captures++;
-            stones[y + 1, x + 1].CurrentState = StoneState.Open;
-            stones[y + 2, x + 2].CurrentState = StoneState.Open;
+            try {
+                Stone[,] stones = gameScreen.Stones;
+                if (x > stones.GetLength(1) - 4 || y > stones.GetLength(0) - 4) return;
+                StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
+                if (x  + 1 > stones.GetLength(1) - 1 || y + 1 > stones.GetLength(0) - 1) return;
+                if (stones[y + 1, x + 1].CurrentState == currentState || stones[y + 1, x + 1].CurrentState == StoneState.Open) return;
+                if (x  + 2 > stones.GetLength(1) - 1 || y + 2 > stones.GetLength(0) - 1) return;
+                if (stones[y + 2, x + 2].CurrentState == currentState || stones[y + 2, x + 2].CurrentState == StoneState.Open) return;
+                if (x  + 3 > stones.GetLength(1) - 1 || y + 3 > stones.GetLength(0) - 1) return;
+                if (stones[y + 3, x + 3].CurrentState != currentState) return;
+                CurrentPlayer.Captures++;
+                stones[y + 1, x + 1].CurrentState = StoneState.Open;
+                stones[y + 2, x + 2].CurrentState = StoneState.Open;
+            } catch { }
 
         }
         private void CheckCaptureURDiagonal(int x, int y)
         {
-            Stone[,] stones = gameScreen.Stones;
-            StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
-            if (x  + 1 > stones.GetLength(1) - 1 || y - 1 < 0) return;
-            if (stones[y - 1, x + 1].CurrentState == currentState || stones[y - 1, x + 1].CurrentState == StoneState.Open) return;
-            if (x  + 2 > stones.GetLength(1) - 1 || y - 1 < 0) return;
-            if (stones[y - 2, x + 2].CurrentState == currentState || stones[y - 2, x + 2].CurrentState == StoneState.Open) return;
-            if (x  + 3 > stones.GetLength(1) - 1 || y - 1 < 0) return;
-            if (stones[y - 3, x + 3].CurrentState != currentState) return;
-            CurrentPlayer.Captures++;
-            stones[y - 1, x + 1].CurrentState = StoneState.Open;
-            stones[y - 2, x + 2].CurrentState = StoneState.Open;
+            try { 
+                Stone[,] stones = gameScreen.Stones;
+                StoneState currentState = CurrentPlayer == Player1 ? StoneState.Black : StoneState.White;
+                if (x  + 1 > stones.GetLength(1) - 1 || y - 1 < 0) return;
+                if (stones[y - 1, x + 1].CurrentState == currentState || stones[y - 1, x + 1].CurrentState == StoneState.Open) return;
+                if (x  + 2 > stones.GetLength(1) - 1 || y - 1 < 0) return;
+                if (stones[y - 2, x + 2].CurrentState == currentState || stones[y - 2, x + 2].CurrentState == StoneState.Open) return;
+                if (x  + 3 > stones.GetLength(1) - 1 || y - 1 < 0) return;
+                if (stones[y - 3, x + 3].CurrentState != currentState) return;
+                CurrentPlayer.Captures++;
+                stones[y - 1, x + 1].CurrentState = StoneState.Open;
+                stones[y - 2, x + 2].CurrentState = StoneState.Open;
+            } catch { }
 
         }
         #endregion
