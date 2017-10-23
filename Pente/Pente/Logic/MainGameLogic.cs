@@ -33,7 +33,7 @@ namespace Pente.Logic
         private bool _canSave;
         private Thread t;
         private Dispatcher d;
-        private const int timerMax = 5000;
+        private const int timerMax = 20000;
         private int timerCur;
         public Player CurrentPlayer { get; set; }
         public Player Player1 { get; set; }

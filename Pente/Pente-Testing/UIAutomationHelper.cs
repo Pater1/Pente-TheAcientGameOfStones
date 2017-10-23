@@ -2,9 +2,20 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace Pente_Testing {
     public static class UIAutomationHelper {
+        private static List<string> syncCache = new List<string>();
+        public static void RegisterSyncedFunction(string key, Action whenSynced) {
+            syncCache.Add(key);
+            while (syncCache[0] != key) {}
+
+            whenSynced();
+
+            syncCache.Remove(key);
+        }
+
         public static T FindVisualChild<T>(FrameworkElement depObj, Func<FrameworkElement, bool> queary) where T : FrameworkElement {
             if (depObj != null) {
                 T ret = depObj as T;
