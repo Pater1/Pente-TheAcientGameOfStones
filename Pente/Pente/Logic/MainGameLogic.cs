@@ -93,13 +93,23 @@ namespace Pente.Logic
 
         public void SwitchPlayerTurn()
         {
-            timerCur = timerMax;
-            if (CurrentPlayer.Captures >= 5)
+            timerCur = -1;
+            bool isStalemate = true;
+            foreach (Stone stone in gameScreen.Stones)
+            {
+                if (stone.CurrentState == StoneState.Open)
+                {
+                    isStalemate = false;
+                    break;
+                }
+            }
+            if (CurrentPlayer.Captures >= 5 || isStalemate)
             {
                 isGameOver = true;
             }
             else if (!isGameOver)
             {
+                timerCur = timerMax;
                 CurrentPlayer = CurrentPlayer == Player1 ? Player2 : Player1;
                 moveCount++;
                 turnsSinceTriaOrTessera++;
@@ -109,18 +119,18 @@ namespace Pente.Logic
                 }
                 return;
             }
-            EndGame();
+            EndGame(isStalemate);
         }
 
-        private void EndGame()
+        private void EndGame(bool isStaleMate)
         {
             TheWindow.Height = 350;
             TheWindow.Width = 250;
             TheWindow.MainGrid.Children.Clear();
             TheWindow.MainGrid.Children.Add(new GameOverScreen(TheWindow)
             {
-                Winner = CurrentPlayer.PlayerName,
-                StyleOfWin = CurrentPlayer.Captures >= 5 ? "5+ captures" : "5 Stones in a row"
+                Winner = isStaleMate? "No one" : CurrentPlayer.PlayerName,
+                StyleOfWin = isStaleMate ? "StaleMate" : CurrentPlayer.Captures >= 5 ? "5+ captures" : "5 Stones in a row"
             });
             timerCur = -1;
         }
